@@ -1,0 +1,41 @@
+{
+  "name": "etqf",
+  "version": "1.0.0",
+  "description": "Web application to manage the Quality Assurance process of the School of Liberal Arts at Mae Fah Luang University",
+  "engines": {
+    "node": "14.x"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test.js",
+    "deploy": "node deploy.js"
+  },
+  "dependencies": {
+    "@sendgrid/mail": "^7.4.5",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "docxtemplater": "^3.22.5",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.5",
+    "express": "^4.15.2",
+    "pg": "^8.6.0",
+    "pizzip": "^3.0.6",
+    "pour-console": "^1.1.2"
+  },
+  "devDependencies": {
+    "got": "^11.3.0",
+    "tape": "^4.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "author": "Ignasi Ribó",
+  "license": "GNU GPLv3"
+}

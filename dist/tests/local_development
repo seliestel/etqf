@@ -1,0 +1,17 @@
+Running postgres locally for development
+Created database: etqf_development
+
+user: postgres
+password: password
+
+Username for psql: postgres
+Password for psql: postgres
+
+$ sudo service postgresql start [ to start server ]
+$ su - postgres [ to access postgres command line]
+postgres=# psql [to access psql]
+
+\c etqf_development [to change to database]
+\dt [to list tables]
+
+Inside run postgresql queries

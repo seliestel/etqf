@@ -1,0 +1,203 @@
+<div class="form-group row" id="TQF3dataToFill">
+  <label class="col-sm-2 col-form-label">Course</label>
+  <div class="col-sm-3">
+    <input disabled class="form-control always-disabled" name="course" value=""/>
+  </div>
+  <label class="col-sm-1 col-form-label">Year</label>
+  <div class="col-sm-2">
+    <input disabled class="form-control always-disabled" name="year" value=""/>
+  </div>
+  <label class="col-sm-2 col-form-label">Semester</label>
+  <div class="col-sm-2">
+    <input disabled class="form-control always-disabled" name="semester" value=""/>
+  </div>
+</div>
+<hr style="color:#000"/>
+
+<div class="card mb-1">
+  <div class="card-header area-toggle" id="TQF5Section2" aria-expanded="false" aria-controls="TQF5Section2Details">
+    <i class="far fa-plus-square mr-2"></i>
+    Section 2: Course Teaching Report
+  </div>
+  <div class="collapse card-body" id="TQF5Section2Details" aria-labelledby="TQF5Section2">
+    <div class="row">
+      <label class="col-md-12"><b>Have the expected course learning outcomes been achieved?</b><span class="text-danger">*</span> <span class="fa fa-question-circle text-info" data-toggle="tooltip" data-placement="bottom" title="For each one of the Course Learning Outcomes, check whether the student learning outcome has been achieved or not. If it has not been achieved, briefly explain the kind of problems that may have prevented the achievement of the outcome and comment on attempted solutions. If the outcome has been achieved, you can leave the box blank."></span></label>
+      <div id="achievementOutcomes">
+        <!-- Populated by etqf.js -->
+      </div>
+    </div>
+    <hr style="color:#000;margin-bottom: 1em"/>
+    <div class="row form-group">
+      <label class="col-md-12"><b>Have the instructors identified any problems with the facilities or the teaching infrastructure?</b> <span class="fa fa-question-circle text-info" data-toggle="tooltip" data-placement="bottom" title="Briefly describe problems encountered related with the classrooms and other facilities. Also, comment on attempted solutions. Leave blank if there are no problems worth mentioning."></span></label>
+      <textarea rows="2" class="form-control" name="teaching[facilities]" placeholder=""></textarea>
+    </div>
+    <div class="row form-group">
+      <label class="col-md-12"><b>Have the instructors identified any problems with the educational support systems (administration, support staff, REG, etc.)?</b> <span class="fa fa-question-circle text-info" data-toggle="tooltip" data-placement="bottom" title="Briefly describe problems encountered related with the support systems and comment on attempted solutions. Leave blank if there are no problems worth mentioning."></span></label>
+      <textarea rows="2" class="form-control" name="teaching[support]" placeholder=""></textarea>
+    </div>
+    <div class="row form-group">
+      <label class="col-md-12"><b>Have the instructors identified any other problems that may have affected teaching outcomes?</b> <span class="fa fa-question-circle text-info" data-toggle="tooltip" data-placement="bottom" title="Briefly describe any other problems encountered during the semester and comment on attempted solutions. Leave blank if there are no additional problems worth mentioning."></span></label>
+      <textarea rows="2" class="form-control" name="teaching[other]" placeholder=""></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-1">
+  <div class="card-header area-toggle" id="TQF5Section3" aria-expanded="false" aria-controls="TQF5Section3Details">
+    <i class="far fa-plus-square mr-2"></i>
+    Section 3: Course Assessment Report
+  </div>
+
+  <div class="collapse card-body" aria-labelledby="TQF5Section3" id="TQF5Section3Details">
+    <div class="row" style="margin-bottom: 20px">
+      <label class="col-sm-7 col-form-label"><b>Final assessment per section</b><span class="text-danger">*</span> <span class="fa fa-question-circle text-info" data-toggle="tooltip" data-placement="bottom" title="For each section of the course, enter the number of students who have obtained each grade and the number of students who have withdrawn or not obtained a grade in each of the boxes. You can add or remove sections with the buttons on the right. Enter only positive numbers on each cell. The application will add the totals automatically. You can check that the totals add up by reviewing the downloaded TQF5."></span></label>
+      <div class="col-md-2">
+        <div id="add_section" class="btn btn-sm btn-info border">Add section</div>
+      </div>
+      <div class="col-md-2">
+        <div id="remove_section" class="btn btn-sm btn-light border">Remove section</div>
+      </div>
+    </div>
+    <div class="row">
+      <label class="col-sm-12  text-center">Graded students</label>
+      <table class="table" id="gradingResultsTable">
+        <!-- Filled by etqf.js -->
+      </table>
+    </div>
+    <div class="row">
+      <label class="col-sm-12 text-center">Non-graded students</label>
+      <table class="table" id="gradingNongradesTable">
+        <!-- Filled by etqf.js -->
+      </table>
+    </div>
+  </div>
+
+  <div class="collapse card-body" aria-labelledby="TQF5Section3"> 
+    <div class="row">
+      <label class="col-md-12"><b>Do you have any remarks on the reported distribution of grades?</b> <span class="fa fa-question-circle text-info" data-toggle="tooltip" data-placement="bottom" title="If you have any remarks on the reported distribution of grades (e.g. reasons for anormal distribution of grades, high degree of withdrawals or incompletions, etc.), write them here. If there are no remarks worth mentioning, you can leave the box blank."></span></label>
+      <textarea rows="2" class="form-control" name="total[comments]" placeholder="Leave blank if there are no remarks."></textarea>
+    </div>
+  </div>
+
+  <div class="collapse card-body" aria-labelledby="TQF5Section3"> 
+    <div class="row">
+      <label class="col-md-12"><b>Have the assessment methods been verified?</b> <span class="fa fa-question-circle text-info" data-toggle="tooltip" data-placement="bottom" title="Briefly describe if and how has this particular assessment method been verified during the course. If possible, provide links to any evidence that can serve as verification."></span></label>
+    </div>
+    <div id="verificationAssessment">
+      <!-- Populated by etqf.js -->
+    </div>
+  </div>
+</div>
+
+<div class="card mb-1">
+  <div class="card-header area-toggle" id="TQF5Section4" aria-expanded="false" aria-controls="TQF5Section4Details">
+    <i class="far fa-plus-square mr-2"></i>
+    Section 4: Student Evaluation Report
+  </div>
+  <div class="collapse card-body" aria-labelledby="TQF5Section4" id="tqf5Section4Details">
+
+    <div class="row form-group">
+      <label class="col-md-4 col-form-label">Student evaluation<span class="text-danger">*</span> <span class="fa fa-question-circle text-info" data-toggle="tooltip" data-placement="bottom" title="Select the type of student evaluation that will be reported. If you are only reporting qualitative feedback from students, select 'None'. The full survey will require you to introduce the mean and standard deviation for every question. The summary survey will only require you to submit the total mean and standard deviation, as well as the number of responses."></span></label>
+      <div class="col-md-8">
+        <select name="evaluation[type]" id="evaluationType" class="evaluationSelect form-control">
+          <!-- Populated by etqf.js -->
+        </select>
+      </div>
+    </div>
+
+    <div class="row form-group toHide" id="surveyGroup" style="display:none">
+      <label class="col-sm-12 col-form-label text-center"><b>Evaluation results for all sections</b> <span class="fa fa-question-circle text-info" data-toggle="tooltip" data-placement="bottom" title="If reporting results for more than one section, add the mean and standard deviation of each section and divide by the number of sections."></span></label>
+    </div>
+    <div class="row form-group toEmpty" id="evaluationResults">
+      <!--- Populated by etqf.js -->
+    </div>
+
+    <div class="row form-group">
+      <label class="col-sm-3 col-form-label">Feedback by students<span class="text-danger">*</span> <span class="fa fa-question-circle text-info" data-toggle="tooltip" data-placement="bottom" title="If you have received the student survey results for your course, write the key recommendations, suggestions or problems identified by the students in the survey. Otherwise, you can add here any feedback that you may have gathered from students during the delivery of the course."></span></label>
+      <textarea rows="4" class="col-sm-9 form-control" name="evaluation[feedback]"></textarea>
+    </div>
+
+    <div class="row form-group">
+      <label class="col-sm-3 col-form-label">Comments on student feedback<span class="text-danger">*</span> <span class="fa fa-question-circle text-info" data-toggle="tooltip" data-placement="bottom" title="Add any comments or responses to the survey results and/or qualitative feedback provided by students from the perspective of the instructors. If students have identified any problems or given a low score in any dimension of teaching, explain why and how would you redress the situation. If you think that the feedback of students is not accurate in any way, you can also give your opinion about it here."></span></label>
+      <textarea rows="4" class="col-sm-9 form-control" name="evaluation[reply]"></textarea>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-1">
+  <div class="card-header area-toggle" id="TQF5Section5" aria-expanded="false" aria-controls="TQF5Section5Details">
+    <i class="far fa-plus-square mr-2"></i>
+    Section 5: Course Improvement Plan
+  </div>
+  <div class="collapse card-body" aria-labelledby="TQF5Section5" id="tqf5Section5Details">
+
+    <div class="form-group" id="previousImprovementsForm">
+      <div class="row">
+        <div class="col-md-7"><b>Previous improvement plan</b> <span class="fa fa-question-circle text-info" data-toggle="tooltip" data-placement="bottom" title="For every recommendation of improvement identified in the previous TQF5 of the course, add the recommended action and the result of implementation (or lack of implementation) of the recommendation during the current semester. Leave blank if there were no recommendations in the previous semester's TQF5. You can add and remove actions with the buttons on the right."></span></div>
+        <div class="col-md-2">
+          <div class="add_action btn btn-sm btn-info border">Add action</div>
+        </div>
+        <div class="col-md-2">
+          <div class="remove_action btn btn-sm btn-light border">Remove action</div>
+        </div>
+      </div>
+      <div class="row actionsRow" style="margin-top: 1em">
+        <div class="col-sm-12">
+          <div class="row">
+            <input class="form-control col-md-6" placeholder="Action to implement" name="plan[previous][][action]"/>
+            <input class="form-control col-md-6" placeholder="Result" name="plan[previous][][result]"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group" id="currentImprovementsForm">
+      <div class="row">
+        <div class="col-md-7"><b>Other actions implemented</b> <span class="fa fa-question-circle text-info" data-toggle="tooltip" data-placement="bottom" title="For every additional measure taken during the current semester to improve the course, indicate the action taken and the result of its implementation. Do not repeat the actions already reported on the previous section. If no additional actions have been taken, you can leave this blank. You can add and remove actions with the buttons on the right."></span></div>
+        <div class="col-md-2">
+          <div  class="add_action btn btn-sm btn-info border">Add action</div>
+        </div>
+        <div class="col-md-2">
+          <div class="remove_action btn btn-sm btn-light border">Remove action</div>
+        </div>
+      </div>
+      <div class="row actionsRow" style="margin-top: 1em">
+        <div class="col-sm-12">
+          <div class="row">
+            <input class="form-control col-md-6" placeholder="Action implemented" name="plan[current][][action]"/>
+            <input class="form-control col-md-6" placeholder="Result" name="plan[current][][result]"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group" id="futureImprovementsForm">
+      <div class="row">
+        <div class="col-md-7"><b>Recommendations for next semester</b> <span class="fa fa-question-circle text-info" data-toggle="tooltip" data-placement="bottom" title="Add any action that you think would be necessary to implement in the next semester to improve the course. For every action, identify the person or persons that should be charged with implementing the action (e.g. coordinators of the course, instructors, curriculum committee, secretaries, School's management, etc.). If there are no recommendations, leave blank. You can add and remove actions with the buttons on the right."></span></div>
+        <div class="col-md-2">
+          <div class="add_action btn btn-sm btn-info border">Add action</div>
+        </div>
+        <div class="col-md-2">
+          <div class="remove_action btn btn-sm btn-light border">Remove action</div>
+        </div>
+      </div>
+      <div class="row actionsRow flexRow" style="margin-top: 1em">
+        <div class="col-sm-12">
+          <div class="row">
+            <input class="form-control col-md-6" placeholder="Action to be implemented" name="plan[future][][action]"/>
+            <input class="form-control col-md-6" placeholder="Responsible for the implementation" name="plan[future][][result]"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>   
+</div>
+
+<p></p>
+<div class="row">
+  <div class="col-md-8"></div>
+  <div class="col-md-4">
+    <button type="submit" value="Generate TQF5" class="form-control btn btn-primary btn-lg">Generate TQF5</button>
+  </div>
+</div>
