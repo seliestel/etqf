@@ -8,7 +8,7 @@ Ignasi Ribó (ignasi.rib@mfu.ac.th)
 
 ## License
 
-This project is licensed under the GNU General Public License v. 3.0 - see the LICENSE.md file for details
+This project is licensed under the GNU General Public License v. 3.0 - see the LICENSE.md file for details.
 
 ## Acknowledgments
 
