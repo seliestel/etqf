@@ -168,8 +168,14 @@
 
   .copyright {
     text-align:center;
-    padding-top:24px;
-    opacity:0.3;
-    font-size:10px;
-    margin-bottom:0;
+    padding-top:14px;
+    opacity:0.6;
+    font-size:12px;
+    margin-bottom:30px;
+
+  }
+
+  .copyright a {
+    cursor:  pointer; 
+    text-decoration: none;
   }

@@ -182,8 +182,6 @@ function generate(template, jsonData, outFilename) {
 
 function print_TQF(jsonData) {
   try {
-    console.log("Printing");
-    console.log(jsonData);
     if (jsonData.has === undefined || !jsonData.has.validated) throw 'Not validated'; 
     var filename = jsonData.course + "_" + jsonData.general.title_en +  "_" + jsonData.year + "_" + jsonData.semester + "_" + jsonData.form;
     /*if (jsonData.signatures !== undefined && jsonData.has.signature && jsonData.signatures.length > 0) {
@@ -614,7 +612,6 @@ $(".upload_draft_eTQF3").on('change', function() {
                 jsonTQF.signatures = [];
                 jsonTQF.has.signature = false;
               }
-              console.log(jsonTQF);
               fillForm(jsonTQF.version, jsonTQF.form);
               hideModal();
             });
@@ -1047,7 +1044,6 @@ $("#signTQF").on('click', function(evt) {
         });
       } else {
         if (jsonTQF.sign(staff, password)) {
-          console.log("Successful signature");
           showModal([
             "Successful signature",
             "<p>The signed eTQF (.json) and TQF (.docx) files will be downloaded to your computer.</p>",
@@ -1812,11 +1808,11 @@ function getCourses(callback) {
       callback();
     } catch(e) {
       console.log(e);
-      error_modal('Course data could not be loaded. The page needs to be restarted. Sorry for the inconvenience.');
+      error_modal('Data could not be loaded. The page needs to be restarted. Sorry for the inconvenience.');
     }
   }, function(error){
       console.log(error);
-      error_modal('Course data could not be loaded. The page needs to be restarted. Sorry for the inconvenience.');
+      error_modal('Data could not be loaded. The page needs to be restarted. Sorry for the inconvenience.');
   });
 }
 
@@ -1846,10 +1842,10 @@ function getStaff(callback) {
       callback();
     } catch(e) {
       console.log(e);
-      error_modal('Staff data could not be loaded. The page needs to be restarted. Sorry for the inconvenience.');
+      error_modal('Data could not be loaded. The page needs to be restarted. Sorry for the inconvenience.');
     }
   }, function() {
-    error_modal('Staff data could not be loaded. The page needs to be restarted. Sorry for the inconvenience.');
+    error_modal('Data could not be loaded. The page needs to be restarted. Sorry for the inconvenience.');
   });
 }
 
@@ -1940,7 +1936,6 @@ $(document).ready(function() {
           $("#TQF5_form").append(tqf5Form);
           getStaff(function() {
             getCourses(function() {
-              console.log("Everything loaded");
               attachGeneralFormListeners();
               forms[current_version].attachListeners();
               reset_all_forms();
