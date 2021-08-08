@@ -1942,6 +1942,7 @@ $(document).ready(function() {
           $("#TQF5_form").append(tqf5Form);
           getStaff(function() {
             getCourses(function() {
+              console.log("Everything loaded");
               attachGeneralFormListeners();
               forms[current_version].attachListeners();
               reset_all_forms();

@@ -45,13 +45,17 @@ async function deploy (
 deploy(async (deployFolder) => {
 
 
-  /*fs.mkdir(`${deployFolder}/data`, function(err) {
-    if (err) {
-      console.log(err)
-    } else {
-      console.log("New directory successfully created.")
-    }
-  });*/
+  try {
+    fs.mkdir(`${deployFolder}/data`, function(err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("New directory successfully created.")
+      }
+    });
+  } catch(e) {
+    console.log(e);
+  }
   fs.writeFileSync(
     `${deployFolder}/.gitignore`,
     fs.readFileSync('.gitignore', 'utf8').replace('data/staff.json', '').replace('data/courses.json', '').replace('.env', '')
@@ -69,4 +73,9 @@ deploy(async (deployFolder) => {
     `${deployFolder}/${'.env'}`
   );
 
-}).catch(console.error)
+}).catch(function(error) {
+  console.log(error);
+  console.log("Removing worktree and heroku branch");
+  await pour(`git worktree remove -f ${deployFolder}`);
+  await pour(`git branch -D ${deployBranch}`);
+})
