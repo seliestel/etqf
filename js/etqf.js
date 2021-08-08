@@ -3,11 +3,9 @@
  * Created by Ignasi Ribó (ignasi.rib@mfu.ac.th) 
  * for use in Mae Fah Luang University, School of Liberal Arts
  * August 2021
- * Licensed under GNU GPLv3 License
+ * Licensed under GNU GPLv3
  * 
- * 
- * Initial development based on https://github.com/ktiu/sylgen
-*/
+ */
 
 /// Global variables ///
 

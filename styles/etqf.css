@@ -165,3 +165,11 @@
     input[type=number] {
       -moz-appearance: textfield;
     }
+
+  .copyright {
+    text-align:center;
+    padding-top:24px;
+    opacity:0.3;
+    font-size:10px;
+    margin-bottom:0;
+  }

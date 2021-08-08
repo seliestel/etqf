@@ -75,7 +75,5 @@ deploy(async (deployFolder) => {
 
 }).catch(function(error) {
   console.log(error);
-  console.log("Removing worktree and heroku branch");
-  await pour(`git worktree remove -f ${deployFolder}`);
-  await pour(`git branch -D ${deployBranch}`);
+  console.log("Should remove worktree and heroku branch manually");
 })
