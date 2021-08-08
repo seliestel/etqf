@@ -166,7 +166,7 @@ $("#updateFile").on("click", evt => {
           if (errors !== undefined && errors.length > 0) {
             msg += " The following errors were found:</p><ul>";
             for (var i=0; i<errors.length;i++) {
-              msg+="<li>"+errors[i]+"</li>";
+              msg+="<li style='color: red'>"+errors[i]+"</li>";
             }
             msg+="</ul>";
           } else {

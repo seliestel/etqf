@@ -1312,8 +1312,6 @@ TQFForms.prototype["001"].populateOutcomes = function() {
   $("#learningOutcomes").empty();
 
   var dots = jsonTQF.general.outcomes_map.split('');
-  console.log('Map for course');
-  console.log(jsonTQF.general.outcomes_map);
   dots.forEach((out, i) => {
     text = "";
     var exclude = "";
