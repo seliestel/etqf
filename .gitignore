@@ -3,4 +3,4 @@ data/staff.json
 .env
 db/*
 node_modules/
-
+deploy.js
