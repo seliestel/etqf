@@ -1250,7 +1250,7 @@ $("#submitTQF").on('click', function(evt) {
 
     insertInDatabase(jsonTQF, id, function(res) {
 
-      var link = "http://etqf.herokuapp.com/download?"+jsonTQF.general.program_code+jsonTQF.course+jsonTQF.year+jsonTQF.semester;
+      var link = window.location+ "download?"+jsonTQF.general.program_code+jsonTQF.course+jsonTQF.year+jsonTQF.semester;
       var msg = "<p>Your eTQF has been successfully submitted to the database. You can check that the submission has been correctly updated in the Data tab. <b>Important: To avoid data losses in case of server failure, please save the signed eTQF you have just submitted in your file system.</b></p>";
       if (jsonTQF.form=="TQF3") msg+="<p>Students can download the TQF3 of your course using the following link: <b>"+link+"</b></p><p>You can also save to your computer the following QR code image which links to the download URL: </p><div class='row'><div class='col-sm-1'></div><div class='col-sm-6'><div id='qrcode'></div></div></div>";
  
@@ -1311,7 +1311,7 @@ function getEmailConfirmation(email, token, success, failure) {
     $("#generateKey").addClass('disabled');
     showModal([
       "Token sent",
-      "<p>A one-time password token has been sent to your email:</p><p>"+email+"</p><p>Please check your email Inbox before proceeding to complete the registration. In the meantime, keep your browser window open.</p><p>The email can take up to 5 minutes to be received and it might end up in your Spam folder. If you don't receive any email, please start the process again. If the email shown here is not correct, contact the administrative staff at the School of Liberal Arts to correct it.</p>",
+      "<p>A one-time password token has been sent to your email:</p><p><b>"+email+"</b></p><p>Please check your email Inbox before proceeding to complete the registration. In the meantime, keep your browser window open.</p><p>The email can take up to 5 minutes to be received and it might end up in your Spam folder. If you don't receive any email, please start the process again. If the email shown above is not correct, contact the administrative staff at the School of Liberal Arts to correct it.</p>",
       "Continue",
       ""
     ]);
