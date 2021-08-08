@@ -259,6 +259,12 @@ function fixData(jsonData, type) {
       // do nothing
     }
   });
+
+  /// TEMP
+  if (jsonData['outcomes_map'] === undefined || jsonData['outcomes_map'].length == 0) jsonData['outcomes_map'] = "ooooooooooooooooo"; 
+
+
+  ///
   return jsonData;
 }
 
@@ -316,11 +322,7 @@ function validateData(jsonData, type) {
         } 
       }
       if (item['outcomes_map'] === undefined || item['outcomes_map'].length == 0) {
-        /// TEMP // errors['missing_outs'] = 'Missing outcomes_map in some entries';
-        /// TEMP
-        item['outcomes_map'] = "ooooooooooooooooo"; 
-        ////// TEMP
-
+        errors['missing_outs'] = 'Missing outcomes_map in some entries';
       } else {
         try {
           dots = item['outcomes_map'].split('');
