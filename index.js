@@ -250,6 +250,10 @@ function fixData(jsonData, type) {
     if (item['prerequisites'] === undefined || item['prerequisites'].length == 0) item['prerequisites'] = "[]";    
     if (item['corequisites'] === undefined || item['corequisites'].length == 0) item['corequisites'] = "[]";
 
+  /// TEMP
+  if (item['outcomes_map'] === undefined || item['outcomes_map'].length == 0) item['outcomes_map'] = "ooooooooooooooooo"; 
+
+
     try {
       var co = JSON.parse(item['corequisites']);
       var pre = JSON.parse(item['prerequisites']);
@@ -260,8 +264,6 @@ function fixData(jsonData, type) {
     }
   });
 
-  /// TEMP
-  if (jsonData['outcomes_map'] === undefined || jsonData['outcomes_map'].length == 0) jsonData['outcomes_map'] = "ooooooooooooooooo"; 
 
 
   ///
