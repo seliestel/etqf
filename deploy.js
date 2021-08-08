@@ -43,18 +43,30 @@ async function deploy (
 }
 
 deploy(async (deployFolder) => {
+
+
+  /*fs.mkdir(`${deployFolder}/data`, function(err) {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log("New directory successfully created.")
+    }
+  });*/
   fs.writeFileSync(
     `${deployFolder}/.gitignore`,
-    fs.readFileSync('.gitignore', 'utf8').replace(ADDED_FILE_1, `${deployFolder}/data/courses.json`)
-    fs.readFileSync('.gitignore', 'utf8').replace(ADDED_FILE_2, `${deployFolder}/data/staff.json`)
+    fs.readFileSync('.gitignore', 'utf8').replace('data/staff.json', '').replace('data/courses.json', '').replace('.env', '')
   )
   fs.copyFileSync(
-    ADDED_FILE_1,
-    `${deployFolder}/${ADDED_FILE_1}`
+    'data/staff.json',
+    `${deployFolder}/${'data/staff.json'}`
+  );
+  fs.copyFileSync(
+    'data/courses.json',
+    `${deployFolder}/${'data/courses.json'}`
   )
   fs.copyFileSync(
-    ADDED_FILE_2,
-    `${deployFolder}/${ADDED_FILE_2}`
-  )
-}).catch(console.error)
+    '.env',
+    `${deployFolder}/${'.env'}`
+  );
 
+}).catch(console.error)

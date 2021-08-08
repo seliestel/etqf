@@ -1,8 +1,0 @@
-DROP TABLE IF EXISTS pubkeys;
-CREATE TABLE IF NOT EXISTS pubkeys (
-   id char(8) PRIMARY KEY NOT NULL,
-   pubkey varchar
-);
-
-// Seed admin with 'password'
-INSERT INTO pubkeys (id, pubkey) VALUES ("59211131", "65ecf0c0bfd032573d33fa4452c55ef1fbc3029909e9974cf6963dcdc7197ddb") ON CONFLICT (id) DO UPDATE SET pubkey="65ecf0c0bfd032573d33fa4452c55ef1fbc3029909e9974cf6963dcdc7197ddb";

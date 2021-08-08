@@ -2,4 +2,4 @@ data/courses.json
 data/staff.json
 .env
 db/*
-data/*
+
