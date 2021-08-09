@@ -195,12 +195,12 @@ const getData = (request, response) => {
       response.status(500).json({});
       return;
     }
+    var jsonData = JSON.parse(jsonString);
     if (type == 'staff') {
       pool.query('SELECT * FROM pubkeys', [],
         (error, results) => {
           try {
             if (error) throw error;
-            var jsonData = JSON.parse(jsonString);
             var objIndex;
             for (var i=0;i<jsonData.length;i++) {
               if (results.rows.length == 0) {
@@ -222,7 +222,7 @@ const getData = (request, response) => {
           }
         });    
     } else {
-      response.status(200).json(jsonString);
+      response.status(200).json(jsonData);
     }
   });
 }
