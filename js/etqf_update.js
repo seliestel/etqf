@@ -157,6 +157,7 @@ $("#updateFile").on("click", evt => {
           $("#dismissButton").on('click', function(evt) { 
             evt.stopPropagation();
             hideModal();
+            window.location = '/update';
           });
         },
         500: function(result) {
