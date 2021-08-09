@@ -554,6 +554,7 @@ class TQF3 {
 
   // TQF3 verify
   verify(id) {
+    console.log('Verifying');
     return verifyTQF(this, id);
   }
 }
@@ -959,7 +960,6 @@ function signTQF(tqf, signer, password) {
 // Only one way to access signature: upload a valid eTQF
 
 $(".upload_valid_eTQF_toSign").on('change', function() {
-  var jsonTQF = {};
   var file = this.files[0];
   var reader = new FileReader();
   reader.addEventListener('load', function (e) {
@@ -1134,9 +1134,12 @@ function verifyTQF(tqf, id) {
 $("#verifyTQF").on('click', function(evt) {
   try {
     evt.stopPropagation(); 
-    if (jsonTQF === undefined) throw 'No eTQF to verify';
+    if (jsonTQF === undefined || jsonTQF.form === undefined) throw 'No eTQF to verify';
     var id = $("#verifySelect").val();
     var signer = jsonStaff[id];
+
+    console.log("Verifying?");
+    console.log(jsonTQF);
     var signature = jsonTQF.verify(signer.id);
     if (signature == false) throw 'The signature could not be verified. This might be because the signature has been tampered or the file has been corrupted.';
     var msg = 'The eTQF was signed by '+signature.name+ ' on '+signature.date+'.';
@@ -1173,7 +1176,6 @@ $("#verifyTQF").on('click', function(evt) {
 
 // Event listener to upload an eTQF to verify or submit. Function updates active jsonTQF.
 $(".upload_signed_eTQF").on('change', function() {
-  var jsonTQF = {};
   var file = this.files[0];
   var container = $(this).closest('.container');
   var reader = new FileReader();
