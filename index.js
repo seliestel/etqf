@@ -10,6 +10,9 @@ const PizZip = require('pizzip');
 const Docxtemplater = require('docxtemplater');
 const fs = require('fs');
 
+const { programs } = require('./js/etqf_constants.js');
+
+
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({extended: true, limit: '50mb'}));
 app.use(cors());
@@ -137,6 +140,7 @@ const downloadTQF3 = (request, response) => {
         var jsonData = {};
         if (results.rows !== undefined && results.rows.length > 0) {
           jsonData = JSON.parse(results.rows[0].data);
+          jsonData = preprint_process(jsonData);
           var output = generateTQF3(jsonData);
           var filename = jsonData.course + "_" + jsonData.general.title_en +  "_" + jsonData.year + "_" + jsonData.semester + ".docx";
           response.download(output, filename, function(err){
@@ -182,6 +186,76 @@ function generateTQF3(jsonData) {
   var filepath = path.resolve(__dirname, filename);
   fs.writeFileSync(filepath, out);
   return filepath;
+}
+
+function preprint_process(tqf) {
+
+  /// Section 2
+  var weeks = tqf.weeks.length;
+  tqf.general.credits_class_total = (parseInt(tqf.general.credits_class) * weeks).toString();
+  tqf.general.credits_lab_total = (parseInt(tqf.general.credits_lab) * weeks).toString();
+  tqf.general.credits_home_total = (parseInt(tqf.general.credits_home) * weeks).toString();
+
+
+  // has object
+  tqf.has.prerequisite = tqf.general !== undefined && tqf.general.prerequisites.length > 0;
+  tqf.has.corequisite = tqf.general !== undefined && tqf.general.corequisites.length > 0;
+  tqf.has.task = tqf.tasks.length > 0 && tqf.tasks[0]['method'].length > 0;
+  tqf.has.coordinator = tqf.coordinators.length > 0 && tqf.coordinators[0].id !== undefined && tqf.coordinators[0].id.length > 0;
+  tqf.has.instructor = tqf.instructors.length > 0  && tqf.instructors[0].id !== undefined && tqf.instructors[0].id.length > 0;
+  tqf.has.team = (tqf.coordinators.length > 0 && tqf.coordinators[0].id !== undefined && tqf.coordinators[0].id.length > 0) || (tqf.instructors.length > 0  && tqf.instructors[0].id !== undefined && tqf.instructors[0].id.length > 0);
+
+
+  if (tqf.form == "TQF3") {
+
+    /// Section 3 : learning outcomes
+    Object.keys(tqf.outcomes).forEach( k => { tqf.outcomes[k]['assessment'] = [] });
+    tqf.tasks.map(task => { task.outcomes.forEach(out => { tqf.outcomes[out]['assessment'].push(task.method + " (" + task.ratio + "%)" )  })  });
+
+    // has object
+    tqf.has.objective = tqf.objectives.length > 0 && tqf.objectives[0].length > 0;
+    tqf.has.week = tqf.weeks.length > 0 && tqf.weeks[0]['topic'].length > 0;
+    tqf.has.textbook = tqf.resources.textbooks.length > 0 && tqf.resources.textbooks[0].length > 0;
+    tqf.has.reference = tqf.resources.references.length > 0 && tqf.resources.references[0].length > 0;
+    tqf.has.other = tqf.resources.others.length > 0 && tqf.resources.others[0].length > 0;
+    tqf.has.grade = tqf.grading.system.length > 0 && tqf.grading.system != 'None';
+
+  } else {
+
+    // has object
+    has.grade = data.has !== undefined && data.has.grade !== undefined ? data.has.grade : tqf3.has.grade;
+    has.sects = (tqf.sections !== undefined && tqf.sections.length > 0 && tqf.sections[0].section.length > 0);
+    has.eval = (tqf.evaluation !== undefined && tqf.evaluation.type !== undefined && tqf.evaluation.type.length > 0);
+    has.survey_total = (tqf.evaluation !== undefined && tqf.evaluation.survey !== undefined && tqf.evaluation.survey.total !== undefined && tqf.evaluation.survey.total.mean !== undefined && tqf.evaluation.survey.total.mean.length > 0);
+    has.survey_questions = (tqf.evaluation !== undefined && tqf.evaluation.survey !== undefined && tqf.evaluation.survey.questions !== undefined && tqf.evaluation.survey.questions.length > 0 && tqf.evaluation.survey.questions[0].question !== undefined && tqf.evaluation.survey.questions[0].question.length > 0 && tqf.evaluation.survey.questions[0].mean !== undefined && tqf.evaluation.survey.questions[0].mean.length > 0);
+    has.feed = (tqf.evaluation !== undefined && tqf.evaluation.feedback !== undefined && tqf.evaluation.feedback.length > 0);
+    has.repl = (tqf.evaluation !== undefined && tqf.evaluation.reply !== undefined && tqf.evaluation.reply.length > 0);
+    has.preplan = (tqf.plan !== undefined && tqf.plan.previous !== undefined && tqf.plan.previous.length > 0 && tqf.plan.previous[0].action.length > 0);
+    has.curplan = (tqf.plan !== undefined && tqf.plan.current !== undefined && tqf.plan.current.length > 0 && tqf.plan.current[0].action.length > 0);
+    has.futplan = (tqf.plan !== undefined && tqf.plan.future !== undefined && tqf.plan.future.length > 0 && tqf.plan.future[0].action.length > 0);
+
+  }
+
+  // Outcomes
+  var curriculum = programs[tqf.general.program_code]['curriculum'];
+  tqf.outcomes_print = [];
+  Object.keys(curriculum).forEach( (k, index) => {
+    tqf.outcomes_print.push ({
+      "title": k + ". " + curriculum[k]["domain"],
+      "outcomes": Object.keys(curriculum[k]['outcomes']).map(out => { if (tqf.outcomes[out]["dot"] != "x") return Object.assign(tqf.outcomes[out], {'number' : out}) })
+    });
+    console.log(tqf.outcomes_print);
+    for (var i=0; i< Object.keys(tqf.outcomes_print[index]['outcomes']).length; i++) {
+      if (tqf.outcomes_print[index]['outcomes'][i] !== undefined) {
+        tqf.outcomes_print[index]['outcomes'][i]['assessment'] = tqf.outcomes_print[index]['outcomes'][i]['assessment'].join(", ");
+      } else {
+        tqf.outcomes_print[index]['outcomes'].splice(i, 1);
+      }
+    }
+  });
+  console.log("Finished processing");
+  console.log(tqf);
+  return tqf;
 }
 
 

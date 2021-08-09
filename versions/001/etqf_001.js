@@ -124,21 +124,7 @@ TQF3.prototype["001"] = function (data) {
     "code": ""
   }
 
-  this.has = data.has !== undefined ? data.has : {
-    "prerequisite": this.general !== undefined && this.general.prerequisites.length > 0,
-    "corequisite": this.general !== undefined && this.general.corequisites.length > 0,
-    "objective": this.objectives.length > 0 && this.objectives[0].length > 0,
-    "week": this.weeks.length > 0 && this.weeks[0]['topic'].length > 0,
-    "task": this.tasks.length > 0 && this.tasks[0]['method'].length > 0,
-    "textbook": this.resources.textbooks.length > 0 && this.resources.textbooks[0].length > 0,
-    "reference": this.resources.references.length > 0 && this.resources.references[0].length > 0,
-    "other": this.resources.others.length > 0 && this.resources.others[0].length > 0,
-    "grade": this.grading.system.length > 0 && this.grading.system != 'None',
-    "coordinator": this.coordinators.length > 0 && this.coordinators[0].id !== undefined && this.coordinators[0].id.length > 0,
-    "instructor": this.instructors.length > 0  && this.instructors[0].id !== undefined && this.instructors[0].id.length > 0,
-    "team": (this.coordinators.length > 0 && this.coordinators[0].id !== undefined && this.coordinators[0].id.length > 0) || (this.instructors.length > 0  && this.instructors[0].id !== undefined && this.instructors[0].id.length > 0),
-  }
-
+  this.has = {};
   this.has.validated = this.isValid();
   this.has.signature = this.isSigned();
 
@@ -500,24 +486,7 @@ TQF5.prototype["001"] = function (tqf3, data) {
     "code": ""
   }
 
-  this.has = {
-    "prerequisite": data.has !== undefined && data.has.prerequisite !== undefined ? data.has.prerequisite : tqf3.has.prerequisite,
-    "corequisite": data.has !== undefined && data.has.corequisite !== undefined ? data.has.corequisite : tqf3.has.corequisite,
-    "task": data.has !== undefined && data.has.task !== undefined ? data.has.task : tqf3.has.task,
-    "grade": data.has !== undefined && data.has.grade !== undefined ? data.has.grade : tqf3.has.grade,
-    "coordinator": data.has !== undefined && data.has.coordinator !== undefined ? data.has.coordinator : tqf3.has.coordinator,
-    "instructor": data.has !== undefined && data.has.instructor !== undefined ? data.has.instructor : tqf3.has.instructor,
-    "team": data.has !== undefined && data.has.team !== undefined ? data.has.team : tqf3.has.team,
-    "sects": (this.sections !== undefined && this.sections.length > 0 && this.sections[0].section.length > 0),
-    "eval": (this.evaluation !== undefined && this.evaluation.type !== undefined && this.evaluation.type.length > 0),
-    "survey_total": (this.evaluation !== undefined && this.evaluation.survey !== undefined && this.evaluation.survey.total !== undefined && this.evaluation.survey.total.mean !== undefined && this.evaluation.survey.total.mean.length > 0),
-    "survey_questions": (this.evaluation !== undefined && this.evaluation.survey !== undefined && this.evaluation.survey.questions !== undefined && this.evaluation.survey.questions.length > 0 && this.evaluation.survey.questions[0].question !== undefined && this.evaluation.survey.questions[0].question.length > 0 && this.evaluation.survey.questions[0].mean !== undefined && this.evaluation.survey.questions[0].mean.length > 0),
-    "feed": (this.evaluation !== undefined && this.evaluation.feedback !== undefined && this.evaluation.feedback.length > 0),
-    "repl": (this.evaluation !== undefined && this.evaluation.reply !== undefined && this.evaluation.reply.length > 0),
-    "preplan": (this.plan !== undefined && this.plan.previous !== undefined && this.plan.previous.length > 0 && this.plan.previous[0].action.length > 0),
-    "curplan": (this.plan !== undefined && this.plan.current !== undefined && this.plan.current.length > 0 && this.plan.current[0].action.length > 0),
-    "futplan": (this.plan !== undefined && this.plan.future !== undefined && this.plan.future.length > 0 && this.plan.future[0].action.length > 0)
-  }
+  this.has = {};
 
   this.has.validated = this.isValid();
   this.has.signature = this.isSigned();
@@ -812,6 +781,89 @@ TQF5.prototype["001"].validate = function(tqf) {
   }
 }
 
+/* PRINT CONTROL */
+/* Pre-printing process for this version */
+
+/* Prototype constructor */
+
+TQFPrint.prototype["001"] = function () {
+  this.version = "001";
+}
+
+TQFPrint.prototype["001"].preprint_process = function(tqf) {
+
+  /// Section 2
+  var weeks = tqf.weeks.length;
+  tqf.general.credits_class_total = (parseInt(tqf.general.credits_class) * weeks).toString();
+  tqf.general.credits_lab_total = (parseInt(tqf.general.credits_lab) * weeks).toString();
+  tqf.general.credits_home_total = (parseInt(tqf.general.credits_home) * weeks).toString();
+
+
+  // has object
+  tqf.has.prerequisite = tqf.general !== undefined && tqf.general.prerequisites.length > 0;
+  tqf.has.corequisite = tqf.general !== undefined && tqf.general.corequisites.length > 0;
+  tqf.has.task = tqf.tasks.length > 0 && tqf.tasks[0]['method'].length > 0;
+  tqf.has.coordinator = tqf.coordinators.length > 0 && tqf.coordinators[0].id !== undefined && tqf.coordinators[0].id.length > 0;
+  tqf.has.instructor = tqf.instructors.length > 0  && tqf.instructors[0].id !== undefined && tqf.instructors[0].id.length > 0;
+  tqf.has.team = (tqf.coordinators.length > 0 && tqf.coordinators[0].id !== undefined && tqf.coordinators[0].id.length > 0) || (tqf.instructors.length > 0  && tqf.instructors[0].id !== undefined && tqf.instructors[0].id.length > 0);
+
+
+  if (tqf.form == "TQF3") {
+
+    /// Section 3 : learning outcomes
+    Object.keys(tqf.outcomes).forEach( k => { tqf.outcomes[k]['assessment'] = [] });
+    tqf.tasks.map(task => { task.outcomes.forEach(out => { tqf.outcomes[out]['assessment'].push(task.method + " (" + task.ratio + "%)" )  })  });
+
+    // has object
+    tqf.has.objective = tqf.objectives.length > 0 && tqf.objectives[0].length > 0;
+    tqf.has.week = tqf.weeks.length > 0 && tqf.weeks[0]['topic'].length > 0;
+    tqf.has.textbook = tqf.resources.textbooks.length > 0 && tqf.resources.textbooks[0].length > 0;
+    tqf.has.reference = tqf.resources.references.length > 0 && tqf.resources.references[0].length > 0;
+    tqf.has.other = tqf.resources.others.length > 0 && tqf.resources.others[0].length > 0;
+    tqf.has.grade = tqf.grading.system.length > 0 && tqf.grading.system != 'None';
+
+  } else {
+
+    // has object
+    has.grade = data.has !== undefined && data.has.grade !== undefined ? data.has.grade : tqf3.has.grade;
+    has.sects = (tqf.sections !== undefined && tqf.sections.length > 0 && tqf.sections[0].section.length > 0);
+    has.eval = (tqf.evaluation !== undefined && tqf.evaluation.type !== undefined && tqf.evaluation.type.length > 0);
+    has.survey_total = (tqf.evaluation !== undefined && tqf.evaluation.survey !== undefined && tqf.evaluation.survey.total !== undefined && tqf.evaluation.survey.total.mean !== undefined && tqf.evaluation.survey.total.mean.length > 0);
+    has.survey_questions = (tqf.evaluation !== undefined && tqf.evaluation.survey !== undefined && tqf.evaluation.survey.questions !== undefined && tqf.evaluation.survey.questions.length > 0 && tqf.evaluation.survey.questions[0].question !== undefined && tqf.evaluation.survey.questions[0].question.length > 0 && tqf.evaluation.survey.questions[0].mean !== undefined && tqf.evaluation.survey.questions[0].mean.length > 0);
+    has.feed = (tqf.evaluation !== undefined && tqf.evaluation.feedback !== undefined && tqf.evaluation.feedback.length > 0);
+    has.repl = (tqf.evaluation !== undefined && tqf.evaluation.reply !== undefined && tqf.evaluation.reply.length > 0);
+    has.preplan = (tqf.plan !== undefined && tqf.plan.previous !== undefined && tqf.plan.previous.length > 0 && tqf.plan.previous[0].action.length > 0);
+    has.curplan = (tqf.plan !== undefined && tqf.plan.current !== undefined && tqf.plan.current.length > 0 && tqf.plan.current[0].action.length > 0);
+    has.futplan = (tqf.plan !== undefined && tqf.plan.future !== undefined && tqf.plan.future.length > 0 && tqf.plan.future[0].action.length > 0);
+
+  }
+
+  // Outcomes
+  var curriculum = programs[tqf.general.program_code]['curriculum'];
+  tqf.outcomes_print = [];
+  Object.keys(curriculum).forEach( (k, index) => {
+    console.log("INdex ", index);
+    tqf.outcomes_print.push ({
+      "title": k + ". " + curriculum[k]["domain"],
+      "outcomes": Object.keys(curriculum[k]['outcomes']).map(out => { if (tqf.outcomes[out]["dot"] != "x") return Object.assign(tqf.outcomes[out], {'number' : out}) })
+    });
+    console.log(tqf.outcomes_print);
+    for (var i=0; i< Object.keys(tqf.outcomes_print[index]['outcomes']).length; i++) {
+      if (tqf.outcomes_print[index]['outcomes'][i] !== undefined) {
+        tqf.outcomes_print[index]['outcomes'][i]['assessment'] = tqf.outcomes_print[index]['outcomes'][i]['assessment'].join(", ");
+      } else {
+        tqf.outcomes_print[index]['outcomes'].splice(i, 1);
+      }
+    }
+  });
+  console.log("Finished processing");
+  console.log(tqf);
+  return tqf;
+}
+
+
+
+
 /* FORM CONTROL */
 /* 5 functions are exposed to etqf.js with version number:
   1. attachListeners
@@ -829,6 +881,7 @@ TQF5.prototype["001"].validate = function(tqf) {
 TQFForms.prototype["001"] = function () {
   this.version = "001";
 }
+
 
 /* Prototype functions */
 

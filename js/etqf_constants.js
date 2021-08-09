@@ -205,3 +205,13 @@ const semesters = {
 // These change with version / Objects are filled in each version file
 var gradings = {};
 var evaluations = {};
+
+
+if (typeof window === 'undefined') {
+  module.exports = {
+    programs,
+    semesters,
+    gradings,
+  evaluations
+  }
+}

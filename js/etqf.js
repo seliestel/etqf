@@ -9,6 +9,20 @@
 
 /// Global variables ///
 
+
+/// Form control object initialization ///
+class TQFForms {
+  constructor() {  
+  }
+}
+
+class TQFPrint {
+  constructor() {  
+  }
+}
+
+var forms = new TQFForms();
+var tqfPrint = new TQFPrint();
 var jsonTQF = {}; // Holds the active eTQF3 or eTQF5
 var jsonStaff = {}; // Holds the data of staff members obtained from server. App cannot be used if this is not loaded
 var jsonCourses = {}; // Holds the data of available courses obtained from server. App cannot be used if this is not loaded
@@ -23,13 +37,6 @@ const templates = {
   "TQF5":"versions/"+current_version+"/tqf5-template-v."+current_version+".docx"
 };
 
-/// Form control object initialization ///
-class TQFForms {
-  constructor() {  
-  }
-}
-
-var forms = new TQFForms();
 
 /// Utility functions ///
 
@@ -159,6 +166,9 @@ function generate(template, jsonData, outFilename) {
     var zip = new PizZip(content);
     var doc=new window.docxtemplater().loadZip(zip);
     doc.setOptions({linebreaks: true});
+    jsonData = tqfPrint[jsonData.version].preprint_process(jsonData);
+    console.log('Sending data to print');
+    console.log(jsonData);
     doc.setData(jsonData);
     try {
       doc.render();
@@ -184,11 +194,6 @@ function print_TQF(jsonData) {
   try {
     if (jsonData.has === undefined || !jsonData.has.validated) throw 'Not validated'; 
     var filename = jsonData.course + "_" + jsonData.general.title_en +  "_" + jsonData.year + "_" + jsonData.semester + "_" + jsonData.form;
-    /*if (jsonData.signatures !== undefined && jsonData.has.signature && jsonData.signatures.length > 0) {
-      filename += "_signed";          
-    } else {
-      filename += "_valid";
-    }*/
     filename += ".docx"; 
     generate(templates[jsonData.form], jsonData, filename);
   } catch(e) {
