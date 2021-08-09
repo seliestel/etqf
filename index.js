@@ -16,7 +16,7 @@ app.use(cors());
 
 const current_version = "001"; // Current eTQF version. Must match the current_version on client side
 const verified_email_sender = 'ignasi.rib@mfu.ac.th'; // Email of sendgrid email sender - must be verified and authorized
-const authorizedToUpdate = ["59211131"];    // IDs of staff members authorized to upload Excel spreadsheets with staff and courses data to update the json files on the server
+const authorizedToUpdate = ["59211131", "58310076", "63410003"];    // IDs of staff members authorized to upload Excel spreadsheets with staff and courses data to update the json files on the server
 
 /// Utility
 
@@ -265,9 +265,6 @@ function fixData(jsonData, type) {
     }
   });
 
-
-
-  ///
   return jsonData;
 }
 
