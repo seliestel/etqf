@@ -88,7 +88,7 @@ TQF3.prototype["001"] = function (data) {
   this.course = data.course.toString();
   this.year = data.year !== undefined ? data.year : "";
   this.semester = data.semester !== undefined ? data.semester : "";
-  this.general = data.general !== undefined ? data.general : setGeneralTQF3(this.course);
+  this.general = setGeneralTQF3(this.course);
   this.venue = data.venue !== undefined ? data.venue : "";
 
   // [{"id": "","name": ""}]
@@ -137,6 +137,7 @@ TQF3.prototype["001"] = function (data) {
 function setGeneralTQF3(course_code) {
 	var general = jsonCourses[course_code];
 	if (general === undefined) throw 'Error';
+
 	// Prerequisites
 	Object.keys(general).forEach(key => {
 		if (typeof general[key] == 'number') general[key] = general[key].toString();
