@@ -1141,7 +1141,6 @@ TQFForms.prototype["001"].fillTQF3Form = function() {
     row = $("#learningOutcomes").find("#"+key.replace('.','_'));
     $(row).find('textarea.outcomesStudent').val(out['student']);
     $(row).find('textarea.outcomesTeaching').val(out['teaching']);
- //   $(row).find('textarea.outcomesAssessment').val(out['assessment']);
   });
   row = $(".tasksRow").first();
   for (var i=0;i<jsonTQF.tasks.length;i++) {
@@ -1371,6 +1370,10 @@ TQFForms.prototype["001"].populateOutcomes = function() {
   var domainValue = "";
 
   var dots = jsonTQF.general.outcomes_map.split('');
+
+  console.log("Populating outcomes");
+  console.log("Dots");
+  console.log(dots);
 
   dots.forEach((out, i) => {
     text = "";
