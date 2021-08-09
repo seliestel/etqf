@@ -155,6 +155,9 @@ function setGeneralTQF3(course_code) {
 }
 
 function setOutcomesTQF3(general) {
+
+  console.log("Setting outcomes for TQF3");
+  console.log(general);
 	if (general === undefined) throw 'Error';
 	var outcomes =  {};
 	var obj = programs[general.program_code]['curriculum'];
@@ -165,7 +168,6 @@ function setOutcomesTQF3(general) {
     	outcomes[outcome] = {
       	"dot": dots[i],
       	"student": "",
-//          "assessment": "",
       	"teaching": ""
     	}
   	});
@@ -1136,6 +1138,8 @@ TQFForms.prototype["001"].fillTQF3Form = function() {
 
   // Section 3
   // Populate and fill outcomes
+  console.log("Calling populate outcomes from fillTQF3");
+  console.log(jsonTQF);
   forms["001"].populateOutcomes();
   Object.entries(jsonTQF.outcomes).forEach( ([key, out]) => {
     row = $("#learningOutcomes").find("#"+key.replace('.','_'));
@@ -1354,6 +1358,9 @@ TQFForms.prototype["001"].fillTQF5Form = function(grading) {
 
 // Specific function to populate outcomes
 TQFForms.prototype["001"].populateOutcomes = function() {
+
+  console.log("Starting populate outcomes");
+  console.log(jsonTQF);
   var outs = [];
   var domains = {};
   Object.keys(programs[jsonTQF.general.program_code]['curriculum']).forEach(key => {
