@@ -146,13 +146,17 @@ $("#updateFile").on("click", evt => {
           showModal([
             "Successful update",
             "<p>The "+type+" data has been successfully updated on the application.</p>",
-            "Continue",
-            ""
+            "Go to app",
+            "Continue updating"
           ]); 
           $("#continueButton").on('click', function(evt) { 
             evt.stopPropagation();
             hideModal();
             window.location = '/';
+          });
+          $("#dismissButton").on('click', function(evt) { 
+            evt.stopPropagation();
+            hideModal();
           });
         },
         500: function(result) {

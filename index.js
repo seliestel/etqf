@@ -236,30 +236,32 @@ function fixData(jsonData, type) {
       if (typeof item[key] !== 'string') item[key] = item[key].toString();
       item[key] = item[key].trim();
     });               
-    if (item['email'] !== undefined) item['email'] = item['email'].toLowerCase();
-    if (item['name'] !== undefined) {
-      item["name"] = item["name"].replace(/\s*([,.!?:;]+)(?!\s*$)\s*/g, '$1 ').replace(/  +/g, ' ');
-      item["name"] = item["name"].toLowerCase().split(' ').map(word => exclude.includes(word) ? word : word.charAt(0).toUpperCase() + word.slice(1)).join(' ').replace(/  +/g, ' ').trim();
-    }
-    if (item['title_en'] !== undefined) item['title_en'] = item['title_en'].toLowerCase().split(' ').map(word => exclude.includes(word) ? word : word.charAt(0).toUpperCase() + word.slice(1)).join(' ').replace(/  +/g, ' ').trim();
-    if (item['program_title_en'] !== undefined) item['program_title_en'] = item['program_title_en'].toLowerCase().split(' ').map(word => exclude.includes(word) ? word : word.charAt(0).toUpperCase() + word.slice(1)).join(' ').replace(/  +/g, ' ').trim();
-    if (item['outcomes_map'] !== undefined) item['outcomes_map'] = item['outcomes_map'].split('').map( dot => { return dot.toLowerCase().trim() }).join('').trim('');
-    if (item['equivalents_1'] === undefined || item['equivalents_1'].length == 0) item['equivalents_1'] = "[]";
-    if (item['equivalents_2'] === undefined || item['equivalents_2'].length == 0) item['equivalents_2'] = "[]";   
-    if (item['prerequisites'] === undefined || item['prerequisites'].length == 0) item['prerequisites'] = "[]";    
-    if (item['corequisites'] === undefined || item['corequisites'].length == 0) item['corequisites'] = "[]";
+    if (type == "staff") {
+      if (item['email'] !== undefined) item['email'] = item['email'].toLowerCase();
+      if (item['name'] !== undefined) {
+        item["name"] = item["name"].replace(/\s*([,.!?:;]+)(?!\s*$)\s*/g, '$1 ').replace(/  +/g, ' ');
+        item["name"] = item["name"].toLowerCase().split(' ').map(word => exclude.includes(word) ? word : word.charAt(0).toUpperCase() + word.slice(1)).join(' ').replace(/  +/g, ' ').trim();
+      }
+    } else {
+      if (item['title_en'] !== undefined) item['title_en'] = item['title_en'].toLowerCase().split(' ').map(word => exclude.includes(word) ? word : word.charAt(0).toUpperCase() + word.slice(1)).join(' ').replace(/  +/g, ' ').trim();
+      if (item['program_title_en'] !== undefined) item['program_title_en'] = item['program_title_en'].toLowerCase().split(' ').map(word => exclude.includes(word) ? word : word.charAt(0).toUpperCase() + word.slice(1)).join(' ').replace(/  +/g, ' ').trim();
+      if (item['outcomes_map'] !== undefined) item['outcomes_map'] = item['outcomes_map'].split('').map( dot => { return dot.toLowerCase().trim() }).join('').trim('');
+      if (item['equivalents_1'] === undefined || item['equivalents_1'].length == 0) item['equivalents_1'] = "[]";
+      if (item['equivalents_2'] === undefined || item['equivalents_2'].length == 0) item['equivalents_2'] = "[]";   
+      if (item['prerequisites'] === undefined || item['prerequisites'].length == 0) item['prerequisites'] = "[]";    
+      if (item['corequisites'] === undefined || item['corequisites'].length == 0) item['corequisites'] = "[]";
 
-  /// TEMP
-  if (item['outcomes_map'] === undefined || item['outcomes_map'].length == 0) item['outcomes_map'] = "ooooooooooooooooo"; 
+      /// TEMP
+      if (item['outcomes_map'] === undefined || item['outcomes_map'].length == 0) item['outcomes_map'] = "ooooooooooooooooo"; 
 
-
-    try {
-      var co = JSON.parse(item['corequisites']);
-      var pre = JSON.parse(item['prerequisites']);
-      item['corequisites'] = JSON.stringify(co.map(el => { return el.trim() }));
-      item['prerequisites'] = JSON.stringify(pre.map(el => { return el.trim() }));
-    } catch(e) {
-      // do nothing
+      try {
+        var co = JSON.parse(item['corequisites']);
+        var pre = JSON.parse(item['prerequisites']);
+        item['corequisites'] = JSON.stringify(co.map(el => { return el.trim() }));
+        item['prerequisites'] = JSON.stringify(pre.map(el => { return el.trim() }));
+      } catch(e) {
+        // do nothing
+      }
     }
   });
 
