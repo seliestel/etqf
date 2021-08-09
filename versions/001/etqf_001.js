@@ -256,9 +256,13 @@ TQF3.prototype["001"].validate = function(tqf) {
     var wrong_teaching = [];
     var out = Object.entries(tqf.outcomes);
     var dots = tqf.general.outcomes_map.split('');
+    console.log("Dots");
+    console.log(dots);
+    console.log("Outs");
+    console.log(out);
     for (var i=0;i<out.length;i++) {
       if (dots[i] != 'x') {
-        if (out[i][1].student === undefined || out[i][1].student.length  || out[i][1].student.substr(0, 24) != "Students will be able to" == 0) wrong_student.push(out[i][0]); // 
+        if (out[i][1].student === undefined || out[i][1].student.length == 0 || out[i][1].student.substr(0, 24) != "Students will be able to" ) wrong_student.push(out[i][0]); // 
         if (out[i][1].teaching === undefined || out[i][1].teaching.length == 0 || out[i][1].teaching.substr(0, 16) != "Instructors will") wrong_teaching.push(out[i][0]);  
         // Corrections with regex
         out[i][1].student = out[i][1].student.charAt(0).toUpperCase() + out[i][1].student.slice(1).trim(); // trim empty spaces
@@ -273,6 +277,8 @@ TQF3.prototype["001"].validate = function(tqf) {
       }
     }
 
+    console.log(wrong_student);
+    console.log(wrong_teaching);
     if (wrong_student.length > 0) errors['outcomes_student'] ="Wrong or missing student learning outcomes ("+wrong_student.join(", ")+") in section 3";
     if (wrong_teaching.length > 0) errors['outcomes_teaching'] ="Wrong or missing teaching methods ("+wrong_teaching.join(", ")+") in section 3";
 
