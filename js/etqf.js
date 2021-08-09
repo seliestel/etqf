@@ -959,6 +959,7 @@ function signTQF(tqf, signer, password) {
 // Only one way to access signature: upload a valid eTQF
 
 $(".upload_valid_eTQF_toSign").on('change', function() {
+  var jsonTQF = {};
   var file = this.files[0];
   var reader = new FileReader();
   reader.addEventListener('load', function (e) {
@@ -1172,6 +1173,7 @@ $("#verifyTQF").on('click', function(evt) {
 
 // Event listener to upload an eTQF to verify or submit. Function updates active jsonTQF.
 $(".upload_signed_eTQF").on('change', function() {
+  var jsonTQF = {};
   var file = this.files[0];
   var container = $(this).closest('.container');
   var reader = new FileReader();
@@ -1179,6 +1181,8 @@ $(".upload_signed_eTQF").on('change', function() {
     try {
       var jsonData = JSON.parse(e.target.result);
       jsonTQF = (jsonData.form == "TQF3") ? new TQF3()[jsonData.version](jsonData) : new TQF5()[jsonData.version]({}, jsonData); 
+      console.log("Valid?");
+      console.log(jsonTQF);
       if (jsonTQF.isValid()) {
         if (jsonTQF.isSigned()) {
           var form = $(container).find('form');
@@ -1235,6 +1239,9 @@ $("#submitTQF").on('click', function(evt) {
     if (jsonTQF === undefined) throw 'No eTQF to verify';
     var id = $("#submitSelect").val();
     var password = $("#submitPassword").val();
+
+    console.log("Valid?");
+    console.log(jsonTQF);
 
     if (!jsonTQF.isValid()) throw "The eTQF you are trying to submit is not valid.";
     if (!jsonTQF.isSigned()) throw "The eTQF you are trying to submit is not signed.";
