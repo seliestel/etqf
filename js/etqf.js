@@ -1735,7 +1735,7 @@ function getData(type, success, failure) {
     statusCode: {
       200: function(result) {
         try {
-          success(JSON.parse(result));
+          success(result);
           return;
         } catch(e) {
           console.log('Error parsing data');
