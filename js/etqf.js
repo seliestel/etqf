@@ -1023,7 +1023,7 @@ $(".upload_valid_eTQF_toSign").on('change', function() {
 $("#signTQF").on('click', function(evt) {
   try {
     evt.stopPropagation();
-    if (jsonTQF === undefined) throw 'No eTQF';
+    if (jsonTQF === undefined || jsonTQF.form === undefined) throw 'No eTQF';
     var id = $("#signatureSelect").val();
     var password = $("#signaturePassword").val();
     var staff = jsonStaff[id];
@@ -1238,7 +1238,7 @@ $(".upload_signed_eTQF").on('change', function() {
 $("#submitTQF").on('click', function(evt) {
   try {
     evt.stopPropagation();
-    if (jsonTQF === undefined) throw 'No eTQF to verify';
+    if (jsonTQF === undefined || jsonTQF.form === undefined) throw 'No eTQF to verify';
     var id = $("#submitSelect").val();
     var password = $("#submitPassword").val();
 
