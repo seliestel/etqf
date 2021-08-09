@@ -254,23 +254,18 @@ TQF3.prototype["001"].validate = function(tqf) {
     // Section 3
     var wrong_student = [];
     var wrong_teaching = [];
-   // var wrong_assessment = [];
     var out = Object.entries(tqf.outcomes);
     var dots = tqf.general.outcomes_map.split('');
     for (var i=0;i<out.length;i++) {
       if (dots[i] != 'x') {
-        if (out[i][1].student === undefined || out[i][1].student.length == 0) wrong_student.push(out[i][0]); //  || out[i][1].student.substr(0, 24) != "Students will be able to"
-        if (out[i][1].teaching === undefined || out[i][1].teaching.length == 0) wrong_teaching.push(out[i][0]);  // || out[i][1].teaching.substr(0, 16) != "Instructors will"
-     //   if (out[i][1].assessment === undefined || out[i][1].assessment.length == 0) wrong_assessment.push(out[i][0]); // || out[i][1].assessment.substr(0, 25) != "Students will be assessed"
+        if (out[i][1].student === undefined || out[i][1].student.length  || out[i][1].student.substr(0, 24) != "Students will be able to" == 0) wrong_student.push(out[i][0]); // 
+        if (out[i][1].teaching === undefined || out[i][1].teaching.length == 0 || out[i][1].teaching.substr(0, 16) != "Instructors will") wrong_teaching.push(out[i][0]);  
         // Corrections with regex
         out[i][1].student = out[i][1].student.charAt(0).toUpperCase() + out[i][1].student.slice(1).trim(); // trim empty spaces
         if (out[i][1].student.match(/[.]$/) === null) out[i][1].student = out[i][1].student + "."; // add punctuation
 
         out[i][1].teaching = out[i][1].teaching.charAt(0).toUpperCase() + out[i][1].teaching.slice(1).trim(); // trim empty spaces
         if (out[i][1].teaching.match(/[.]$/) === null) out[i][1].teaching = out[i][1].teaching + "."; // add punctuation
-
-   //     out[i][1].assessment = out[i][1].assessment.charAt(0).toUpperCase() + out[i][1].assessment.slice(1).trim(); // trim empty spaces
-   //     if (out[i][1].assessment.match(/[.]$/) === null) out[i][1].assessment = out[i][1].assessment + "."; // add punctuation        
 
       } else {
         out[i][1].student = "";
@@ -280,7 +275,6 @@ TQF3.prototype["001"].validate = function(tqf) {
 
     if (wrong_student.length > 0) errors['outcomes_student'] ="Wrong or missing student learning outcomes ("+wrong_student.join(", ")+") in section 3";
     if (wrong_teaching.length > 0) errors['outcomes_teaching'] ="Wrong or missing teaching methods ("+wrong_teaching.join(", ")+") in section 3";
- //   if (wrong_assessment.length > 0) errors['outcomes_assessment'] ="Wrong or missing assessment methods ("+wrong_assessment.join(", ")+") in section 3";
 
     // Section 4
     if (tqf.weeks===undefined || tqf.weeks.length == 0 ||  (tqf.weeks.length == 1 && tqf.weeks[0].topic.length == 0)) { 
@@ -319,6 +313,12 @@ TQF3.prototype["001"].validate = function(tqf) {
           if (num[i] == 0 && i<tqf.grading.range.length-1) throw 'Some intermediate grades in the grading range of section 4 have a value of 0'
           tqf.grading.range[i] = num[i].toFixed(2).toString();
         }
+      }
+
+      // Specific validations for Bachelor in English to enforce standard grading range throughout:
+      if (tqf.general.program_code == "633100601") {
+        if (tqf.grading.system !== "A-F") throw 'Grading system should be A-F (English major)';
+        if (tqf.grading.range !== gradings["A-F"]["range"]) throw 'The values of the grading range should be standard (English major)';
       }
     } catch(e) {
       errors['grades'] = e;
@@ -861,9 +861,6 @@ TQFPrint.prototype["001"].preprint_process = function(tqf) {
   return tqf;
 }
 
-
-
-
 /* FORM CONTROL */
 /* 5 functions are exposed to etqf.js with version number:
   1. attachListeners
@@ -1360,14 +1357,15 @@ TQFForms.prototype["001"].populateOutcomes = function() {
   });
   outs = outs.concat.apply([], outs);
 
+  $("#learningOutcomes").empty();
+
   var outsCourse = [];
   var text = "";
   var precede = "";
   var domainValue = "";
 
-  $("#learningOutcomes").empty();
-
   var dots = jsonTQF.general.outcomes_map.split('');
+
   dots.forEach((out, i) => {
     text = "";
     var exclude = "";
@@ -1411,15 +1409,6 @@ TQFForms.prototype["001"].populateOutcomes = function() {
             $('<textarea rows="2" class="col-sm-8 form-control outcomesTeaching" value="" name="outcomes['+outs[i]+'][teaching]" placeholder="Instructors will...">')
         )
       )
-      /*
-      .append(
-        $('<div class="form-group row">')
-          .append(
-            $('<label class="col-sm-4">').text("Assessment methods").append('<span class="text-danger">*</span> <span class="text-info fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title="Write the methods that will be used to assess whether students have achieved this learning outcome, beginning with the phrase \'Students will be assessed\' followed by the assessment method(s) to be employed."></span>')
-          ).append(
-            $('<textarea rows="2" class="col-sm-8 form-control outcomesAssessment" value="" name="outcomes['+outs[i]+'][assessment]" placeholder="Students will be assessed...">')
-        )
-      )*/
     )
     if (out == "0") $("#learningOutcomes").find('.outc').last().hide();
   });
