@@ -590,7 +590,11 @@ $(".upload_draft_eTQF3").on('change', function() {
             reset_all_forms();
             $("select").not('.excludeSelect2').select2({ theme: "bootstrap4"});  
             current_version = jsonUpload.version; 
+
             jsonTQF = new TQF3()[current_version](jsonUpload);
+            console.log("Uploaded draft");
+            console.log(jsonTQF);
+
             if (jsonTQF.signatures.length > 0) {
               jsonTQF.signatures = [];
               jsonTQF.has.signature = false;
@@ -961,6 +965,8 @@ $(".upload_valid_eTQF_toSign").on('change', function() {
     try {
       var jsonData = JSON.parse(e.target.result);
       (jsonData.form == "TQF3") ? jsonTQF = new TQF3()[jsonData.version](jsonData) : jsonTQF = new TQF5()[jsonData.version]({}, jsonData); 
+      console.log("Checking validity");
+      console.log(jsonTQF);
       
       if (jsonTQF.isValid()) {
         if (jsonTQF.isSigned()) {
