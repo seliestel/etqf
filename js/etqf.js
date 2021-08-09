@@ -580,7 +580,13 @@ $(".upload_draft_eTQF3").on('change', function() {
   reader.addEventListener('load', function (e) {
     try {
       var jsonUpload = JSON.parse(e.target.result);
-      if (jsonUpload.version === undefined)jsonUpload.version = current_version;
+      if (jsonUpload.version === undefined) jsonUpload.version = current_version;
+
+      // Updating general in case the draft has old course data. This cannot be changed in the constructor or it would affect also signatures and verifications of all existing TQFs
+      var storedGeneral = jsonCourses[jsonUpload.course];
+      if (storedGeneral === undefined) throw 'The course does not exist';
+      jsonUpload.general = JSON.parse(JSON.stringify(storedGeneral));
+
       if (jsonUpload.version != current_version) {
         getForm("TQF3", jsonUpload.version, 
           function(result) {

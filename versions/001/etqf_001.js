@@ -88,7 +88,7 @@ TQF3.prototype["001"] = function (data) {
   this.course = data.course.toString();
   this.year = data.year !== undefined ? data.year : "";
   this.semester = data.semester !== undefined ? data.semester : "";
-  this.general = setGeneralTQF3(this.course);
+  this.general = data.general !== undefined ? data.general : setGeneralTQF3(this.course);
   this.venue = data.venue !== undefined ? data.venue : "";
 
   // [{"id": "","name": ""}]
