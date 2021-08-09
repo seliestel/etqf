@@ -214,7 +214,7 @@ const getData = (request, response) => {
                 }
               }
             }
-            response.status(200).json(JSON.stringify(jsonData));
+            response.status(200).json(jsonData);
           } catch(e) {
             console.log("Failed reading database");
             console.log(e);
