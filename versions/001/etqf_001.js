@@ -327,7 +327,8 @@ TQF3.prototype["001"].validate = function(tqf) {
       // Specific validations for Bachelor in English to enforce standard grading range throughout:
       if (tqf.general.program_code == "633100601") {
         if (tqf.grading.system !== "A-F") throw 'Grading system should be A-F (English major)';
-        if (tqf.grading.range !== gradings["001"]["A-F"]["range"]) throw 'The values of the grading range should be standard (English major)';
+        if ((tqf.grading.range.length !== gradings["001"]["A-F"]["range"].length) || (tqf.grading.range.every(function(value, index) { return value === gradings["001"]["A-F"]["range"][index]})))
+          throw 'The values of the grading range should be standard (English major)';
       }
     } catch(e) {
       errors['grades'] = e;
