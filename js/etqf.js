@@ -1793,8 +1793,6 @@ function populateCourses() {
 function getCourses(callback) {
   return getData("courses", function(y) {
     try {
-      console.log("Courses");
-      console.log(y);
       courses = y.sort( (a, b) => { return a.course.localeCompare(b.course); });
       courses.forEach( o => {
         Object.keys(o).forEach( key => {
@@ -1838,8 +1836,6 @@ function populateStaff() {
 function getStaff(callback) {
   return getData('staff', function(y) {
     try {
-      console.log("Staff data");
-      console.log(y);
       var staff = y.sort( (a, b) => { return a.email.localeCompare(b.email); });
       for (var i=0;i<staff.length;i++) jsonStaff[staff[i]['id']] = staff[i];
       populateStaff();
