@@ -124,10 +124,12 @@ TQF3.prototype["001"] = function (data) {
     "code": ""
   }
 
+  console.log("Adding has");
+  console.log(this);
   this.has = {};
   this.has.validated = this.isValid();
   this.has.signature = this.isSigned();
-
+  console.log(this.has);
   return this;
 
 }
