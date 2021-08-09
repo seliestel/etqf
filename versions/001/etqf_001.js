@@ -285,13 +285,16 @@ TQF3.prototype["001"].validate = function(tqf) {
 
    //     out[i][1].assessment = out[i][1].assessment.charAt(0).toUpperCase() + out[i][1].assessment.slice(1).trim(); // trim empty spaces
    //     if (out[i][1].assessment.match(/[.]$/) === null) out[i][1].assessment = out[i][1].assessment + "."; // add punctuation        
+
+      } else {
+        out[i][1].student = "";
+        out[i][1].teaching = "";
       }
     }
 
     if (wrong_student.length > 0) errors['outcomes_student'] ="Wrong or missing student learning outcomes ("+wrong_student.join(", ")+") in section 3";
     if (wrong_teaching.length > 0) errors['outcomes_teaching'] ="Wrong or missing teaching methods ("+wrong_teaching.join(", ")+") in section 3";
  //   if (wrong_assessment.length > 0) errors['outcomes_assessment'] ="Wrong or missing assessment methods ("+wrong_assessment.join(", ")+") in section 3";
-
 
     // Section 4
     if (tqf.weeks===undefined || tqf.weeks.length == 0 ||  (tqf.weeks.length == 1 && tqf.weeks[0].topic.length == 0)) { 

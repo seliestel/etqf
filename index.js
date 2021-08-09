@@ -100,8 +100,8 @@ const addSubmission = (request, response) => {
               if (err) throw err;
               if (results.rows.length == 0 || results.rows[0].timestamp != timestamp ) throw 'Failure';
               response.status(200).json({message: 'submission added'}); 
-            } catch(err) {
-              console.log(err);
+            } catch(e) {
+              console.log(e);
               response.status(500).json({ message: 'submission failed' });
             }
           });  
@@ -189,7 +189,6 @@ function generateTQF3(jsonData) {
 
 const getData = (request, response) => {
   const { type } = request.query;
-  console.log(type);
   fs.readFile("./data/"+type+".json", "utf8", (err, jsonString) => {
     if (err) {
       console.log("File read failed:", err);
@@ -434,7 +433,6 @@ const updateData = (request, response) => {
               console.log('Error writing file', err);
             } else {
               response.status(200).json({ message: 'data updated' });
-              console.log('Successfully updated file');
             }
           });
         }
