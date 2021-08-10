@@ -655,7 +655,6 @@ TQF5.prototype["001"].validate = function(tqf) {
       if (tqf.outcomes[k]['dot'] === "x") {
         tqf.outcomes[k]['student'] = 'N/A';
         tqf.outcomes[k]['teaching'] = 'N/A';
-        //tqf.outcomes[k]['assessment'] = 'N/A'; 
         tqf.outcomes[k]['achieved'] = 'N/A';        
         tqf.outcomes[k]['problems'] = 'N/A';        
       }
