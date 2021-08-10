@@ -268,9 +268,10 @@ const getData = (request, response) => {
       if (stored.rows.length == 0) throw 'No data';
       console.log(stored.rows[0]);
       if (stored.rows[0].json === undefined || stored.rows[0].json.length == 0) throw 'No data';
-      var jsonData = stored.rows[0].json;
+      var data = stored.rows[0].json;
+      var jsonData = JSON.parse(data);
       if (type == 'courses') {
-        response.status(200).json(JSON.parse(jsonData));
+        response.status(200).json(jsonData);
       } else {
         pool.query('SELECT * FROM pubkeys', [],
         (error, results) => {
@@ -289,7 +290,7 @@ const getData = (request, response) => {
                 }
               }
             }
-            response.status(200).json(JSON.parse(jsonData));
+            response.status(200).json(jsonData);
           } catch(e) {
             console.log("Failed reading database");
             console.log(e);
