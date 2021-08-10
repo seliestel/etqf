@@ -273,8 +273,8 @@ TQF3.prototype["001"].validate = function(tqf) {
       }
     }
 
-    if (wrong_student.length > 0) errors['outcomes_student'] ="Wrong or missing student learning outcomes ("+wrong_student.join(", ")+") in section 3";
-    if (wrong_teaching.length > 0) errors['outcomes_teaching'] ="Wrong or missing teaching methods ("+wrong_teaching.join(", ")+") in section 3";
+    if (wrong_student.length > 0) errors['outcomes_student'] ="Wrong or missing student learning outcomes ("+wrong_student.join(", ")+") in section 3 (they should start by 'Students will be able to')";
+    if (wrong_teaching.length > 0) errors['outcomes_teaching'] ="Wrong or missing teaching methods ("+wrong_teaching.join(", ")+") in section 3 (they should start by 'Instructors will')";
 
     // Section 4
     if (tqf.weeks===undefined || tqf.weeks.length == 0 ||  (tqf.weeks.length == 1 && tqf.weeks[0].topic.length == 0)) { 
@@ -283,11 +283,11 @@ TQF3.prototype["001"].validate = function(tqf) {
       var weeks = Object.entries(tqf.weeks);
       for (var i=0;i<weeks.length;i++) {
         if (weeks[i][1].topic === undefined || weeks[i][1].topic.length == 0) {
-          errors['weeks'] = 'Incomplete lesson plan in section 4';
+          errors['weeks'] = 'Incomplete lesson plan in section 4 (missing topics)';
           break;
         }
         if (weeks[i][1].contents === undefined || weeks[i][1].contents.length == 0) {
-          errors['weeks'] = 'Incomplete lesson plan in section 4';
+          errors['weeks'] = 'Incomplete lesson plan in section 4 (missing contents)';
           break;
         }
       }
@@ -842,18 +842,19 @@ TQFPrint.prototype["001"].preprint_process = function(tqf) {
   // Outcomes
   var curriculum = programs[tqf.general.program_code]['curriculum'];
   tqf.outcomes_print = [];
+  var obj;
   Object.keys(curriculum).forEach( (k, index) => {
-    tqf.outcomes_print.push ({
+    obj = {
       "title": k + ". " + curriculum[k]["domain"],
-      "outcomes": Object.keys(curriculum[k]['outcomes']).map(out => { if (tqf.outcomes[out]["dot"] != "x") return Object.assign(tqf.outcomes[out], {'number' : out}) })
-    });
-    for (var i=0; i< Object.keys(tqf.outcomes_print[index]['outcomes']).length; i++) {
-      if (tqf.outcomes_print[index]['outcomes'][i] !== undefined) {
-        tqf.outcomes_print[index]['outcomes'][i]['assessment'] = tqf.outcomes_print[index]['outcomes'][i]['assessment'].join(", ");
-      } else {
-        tqf.outcomes_print[index]['outcomes'].splice(i, 1);
-      }
+      "outcomes": []
     }
+    Object.keys(curriculum[k]['outcomes']).forEach((out, i) => {
+      if (tqf.outcomes[out]["dot"] != 'x') {
+       obj['outcomes'].push(Object.assign(tqf.outcomes[out], {'number' : out}));
+       obj['outcomes'][obj['outcomes'].length - 1]['assessment'] = obj['outcomes'][obj['outcomes'].length - 1]['assessment'].join(", ");
+      }
+    });
+    tqf.outcomes_print[index] = JSON.parse(JSON.stringify(obj));
   });
   return tqf;
 }

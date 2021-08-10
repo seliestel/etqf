@@ -163,14 +163,17 @@ function loadFile(url, callback){
 function generate(template, jsonData, outFilename) {
   loadFile(template, function(error, content) {
     if (error) throw error;
-    var zip = new PizZip(content);
-    var doc=new window.docxtemplater().loadZip(zip);
-    doc.setOptions({linebreaks: true});
-    jsonData = tqfPrint[jsonData.version].preprint_process(jsonData);
-    doc.setData(jsonData);
+      var zip = new PizZip(content);
+      var doc=new window.docxtemplater().loadZip(zip);
+      doc.setOptions({linebreaks: true});
+      jsonData = tqfPrint[jsonData.version].preprint_process(jsonData);
+      doc.setData(jsonData);
+      console.log("Rendering");
+      console.log(jsonData);
     try {
       doc.render();
     } catch (error) {
+      console.log("ERROR HERE");
       var e = {
         message: error.message,
         name: error.name,
@@ -178,7 +181,7 @@ function generate(template, jsonData, outFilename) {
         properties: error.properties,
       }
       console.log(JSON.stringify({error: e}));
-      throw error;
+      error_modal("There was an unexpected error and the formatted Word file could not be downloaded. Sorry for the inconvenience. Please try again later or inform the School of Liberal Arts, if the problem persists.");
     }
     var out=doc.getZip().generate({
       type: "blob",
@@ -190,14 +193,18 @@ function generate(template, jsonData, outFilename) {
 
 function print_TQF(jsonData) {
   try {
+    console.log("Printing");
     if (jsonData.has === undefined || !jsonData.has.validated) throw 'Not validated'; 
     var filename = jsonData.course + "_" + jsonData.general.title_en +  "_" + jsonData.year + "_" + jsonData.semester + "_" + jsonData.form;
     if (jsonData.signatures !== undefined && jsonData.has !== undefined && jsonData.has.signature && jsonData.signatures.length > 0) {
-      filename +="_signed";
+      filename += "_signed";
     } else if (jsonData.has !== undefined && jsonData.has.validated) {
-      filename +="_valid";
+      filename += "_valid";
     }
-    filename += ".docx"; 
+    filename += ".docx";
+    console.log("Sending to generate");
+    console.log(jsonData);
+
     generate(templates[jsonData.form], jsonData, filename);
   } catch(e) {
     console.log('Error');

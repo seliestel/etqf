@@ -239,19 +239,24 @@ function preprint_process(tqf) {
   // Outcomes
   var curriculum = programs[tqf.general.program_code]['curriculum'];
   tqf.outcomes_print = [];
+  var obj;
   Object.keys(curriculum).forEach( (k, index) => {
-    tqf.outcomes_print.push ({
+    obj = {
       "title": k + ". " + curriculum[k]["domain"],
-      "outcomes": Object.keys(curriculum[k]['outcomes']).map(out => { if (tqf.outcomes[out]["dot"] != "x") return Object.assign(tqf.outcomes[out], {'number' : out}) })
-    });
-    for (var i=0; i< Object.keys(tqf.outcomes_print[index]['outcomes']).length; i++) {
-      if (tqf.outcomes_print[index]['outcomes'][i] !== undefined) {
-        tqf.outcomes_print[index]['outcomes'][i]['assessment'] = tqf.outcomes_print[index]['outcomes'][i]['assessment'].join(", ");
-      } else {
-        tqf.outcomes_print[index]['outcomes'].splice(i, 1);
-      }
+      "outcomes": []
     }
+    console.log("Object for index = ", index);
+    Object.keys(curriculum[k]['outcomes']).forEach((out, i) => {
+      console.log(obj);
+      console.log(i);
+      if (tqf.outcomes[out]["dot"] != 'x') {
+       obj['outcomes'].push(Object.assign(tqf.outcomes[out], {'number' : out}));
+       obj['outcomes'][obj['outcomes'].length - 1]['assessment'] = obj['outcomes'][obj['outcomes'].length - 1]['assessment'].join(", ");
+      }
+    });
+    tqf.outcomes_print[index] = JSON.parse(JSON.stringify(obj));
   });
+
   return tqf;
 }
 
