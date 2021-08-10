@@ -167,8 +167,6 @@ function generate(template, jsonData, outFilename) {
     var doc=new window.docxtemplater().loadZip(zip);
     doc.setOptions({linebreaks: true});
     jsonData = tqfPrint[jsonData.version].preprint_process(jsonData);
-    console.log('Sending data to print');
-    console.log(jsonData);
     doc.setData(jsonData);
     try {
       doc.render();
@@ -204,7 +202,6 @@ function print_TQF(jsonData) {
   } catch(e) {
     console.log('Error');
     console.log(e);
-        console.log(jsonData);
   } 
 }
 
@@ -559,7 +556,6 @@ class TQF3 {
 
   // TQF3 verify
   verify(id) {
-    console.log('Verifying');
     return verifyTQF(this, id);
   }
 }
@@ -604,8 +600,6 @@ $(".upload_draft_eTQF3").on('change', function() {
             current_version = jsonUpload.version; 
 
             jsonTQF = new TQF3()[current_version](jsonUpload);
-            console.log("Uploaded draft");
-            console.log(jsonTQF);
 
             if (jsonTQF.signatures.length > 0) {
               jsonTQF.signatures = [];
@@ -1149,8 +1143,6 @@ $("#verifyTQF").on('click', function(evt) {
     var id = $("#verifySelect").val();
     var signer = jsonStaff[id];
 
-    console.log("Verifying?");
-    console.log(jsonTQF);
     var signature = jsonTQF.verify(signer.id);
     if (signature == false) throw 'The signature could not be verified. This might be because the signature has been tampered or the file has been corrupted.';
     var msg = 'The eTQF was signed by '+signature.name+ ' on '+signature.date+'.';
@@ -1194,8 +1186,7 @@ $(".upload_signed_eTQF").on('change', function() {
     try {
       var jsonData = JSON.parse(e.target.result);
       jsonTQF = (jsonData.form == "TQF3") ? new TQF3()[jsonData.version](jsonData) : new TQF5()[jsonData.version]({}, jsonData); 
-      console.log("Valid?");
-      console.log(jsonTQF);
+
       if (jsonTQF.isValid()) {
         if (jsonTQF.isSigned()) {
           var form = $(container).find('form');
@@ -1252,9 +1243,6 @@ $("#submitTQF").on('click', function(evt) {
     if (jsonTQF === undefined || jsonTQF.form === undefined) throw 'No eTQF to verify';
     var id = $("#submitSelect").val();
     var password = $("#submitPassword").val();
-
-    console.log("Valid?");
-    console.log(jsonTQF);
 
     if (!jsonTQF.isValid()) throw "The eTQF you are trying to submit is not valid.";
     if (!jsonTQF.isSigned()) throw "The eTQF you are trying to submit is not signed.";
