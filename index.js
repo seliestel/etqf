@@ -244,7 +244,6 @@ function preprint_process(tqf) {
       "title": k + ". " + curriculum[k]["domain"],
       "outcomes": Object.keys(curriculum[k]['outcomes']).map(out => { if (tqf.outcomes[out]["dot"] != "x") return Object.assign(tqf.outcomes[out], {'number' : out}) })
     });
-    console.log(tqf.outcomes_print);
     for (var i=0; i< Object.keys(tqf.outcomes_print[index]['outcomes']).length; i++) {
       if (tqf.outcomes_print[index]['outcomes'][i] !== undefined) {
         tqf.outcomes_print[index]['outcomes'][i]['assessment'] = tqf.outcomes_print[index]['outcomes'][i]['assessment'].join(", ");
@@ -253,8 +252,6 @@ function preprint_process(tqf) {
       }
     }
   });
-  console.log("Finished processing");
-  console.log(tqf);
   return tqf;
 }
 

@@ -124,12 +124,9 @@ TQF3.prototype["001"] = function (data) {
     "code": ""
   }
 
-  console.log("Adding has");
-  console.log(this);
   this.has = {};
   this.has.validated = this.isValid();
   this.has.signature = this.isSigned();
-  console.log(this.has);
   return this;
 
 }
@@ -159,8 +156,6 @@ function setGeneralTQF3(course_code) {
 
 function setOutcomesTQF3(general) {
 
-  console.log("Setting outcomes for TQF3");
-  console.log(general);
 	if (general === undefined) throw 'Error';
 	var outcomes =  {};
 	var obj = programs[general.program_code]['curriculum'];
@@ -261,10 +256,6 @@ TQF3.prototype["001"].validate = function(tqf) {
     var wrong_teaching = [];
     var out = Object.entries(tqf.outcomes);
     var dots = tqf.general.outcomes_map.split('');
-    console.log("Dots");
-    console.log(dots);
-    console.log("Outs");
-    console.log(out);
     for (var i=0;i<out.length;i++) {
       if (dots[i] != 'x') {
         if (out[i][1].student === undefined || out[i][1].student.length == 0 || out[i][1].student.substr(0, 24) != "Students will be able to" ) wrong_student.push(out[i][0]); // 
@@ -282,8 +273,6 @@ TQF3.prototype["001"].validate = function(tqf) {
       }
     }
 
-    console.log(wrong_student);
-    console.log(wrong_teaching);
     if (wrong_student.length > 0) errors['outcomes_student'] ="Wrong or missing student learning outcomes ("+wrong_student.join(", ")+") in section 3";
     if (wrong_teaching.length > 0) errors['outcomes_teaching'] ="Wrong or missing teaching methods ("+wrong_teaching.join(", ")+") in section 3";
 
@@ -855,12 +844,10 @@ TQFPrint.prototype["001"].preprint_process = function(tqf) {
   var curriculum = programs[tqf.general.program_code]['curriculum'];
   tqf.outcomes_print = [];
   Object.keys(curriculum).forEach( (k, index) => {
-    console.log("INdex ", index);
     tqf.outcomes_print.push ({
       "title": k + ". " + curriculum[k]["domain"],
       "outcomes": Object.keys(curriculum[k]['outcomes']).map(out => { if (tqf.outcomes[out]["dot"] != "x") return Object.assign(tqf.outcomes[out], {'number' : out}) })
     });
-    console.log(tqf.outcomes_print);
     for (var i=0; i< Object.keys(tqf.outcomes_print[index]['outcomes']).length; i++) {
       if (tqf.outcomes_print[index]['outcomes'][i] !== undefined) {
         tqf.outcomes_print[index]['outcomes'][i]['assessment'] = tqf.outcomes_print[index]['outcomes'][i]['assessment'].join(", ");
@@ -869,8 +856,6 @@ TQFPrint.prototype["001"].preprint_process = function(tqf) {
       }
     }
   });
-  console.log("Finished processing");
-  console.log(tqf);
   return tqf;
 }
 
@@ -1143,8 +1128,6 @@ TQFForms.prototype["001"].fillTQF3Form = function() {
 
   // Section 3
   // Populate and fill outcomes
-  console.log("Calling populate outcomes from fillTQF3");
-  console.log(jsonTQF);
   forms["001"].populateOutcomes();
   Object.entries(jsonTQF.outcomes).forEach( ([key, out]) => {
     row = $("#learningOutcomes").find("#"+key.replace('.','_'));
@@ -1364,8 +1347,6 @@ TQFForms.prototype["001"].fillTQF5Form = function(grading) {
 // Specific function to populate outcomes
 TQFForms.prototype["001"].populateOutcomes = function() {
 
-  console.log("Starting populate outcomes");
-  console.log(jsonTQF);
   var outs = [];
   var domains = {};
   Object.keys(programs[jsonTQF.general.program_code]['curriculum']).forEach(key => {
@@ -1382,10 +1363,6 @@ TQFForms.prototype["001"].populateOutcomes = function() {
   var domainValue = "";
 
   var dots = jsonTQF.general.outcomes_map.split('');
-
-  console.log("Populating outcomes");
-  console.log("Dots");
-  console.log(dots);
 
   dots.forEach((out, i) => {
     text = "";
