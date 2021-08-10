@@ -260,15 +260,19 @@ function preprint_process(tqf) {
 
 const getData = (request, response) => {
   const { type } = request.query;
-  fs.readFile("./data/"+type+".json", "utf8", (err, jsonString) => {
-    if (err) {
-      console.log("File read failed:", err);
-      response.status(500).json({});
-      return;
-    }
-    var jsonData = JSON.parse(jsonString);
-    if (type == 'staff') {
-      pool.query('SELECT * FROM pubkeys', [],
+  console.log("Requesting type: ", type);
+  pool.query('SELECT * FROM data WHERE type=$1;', [type],
+    (err, stored) => {
+    try {
+      if (err) throw 'Database failure';
+      if (stored.rows.length == 0) throw 'No data';
+      console.log(stored.rows[0]);
+      if (stored.rows[0].json === undefined || stored.rows[0].json.length == 0) throw 'No data';
+      var jsonData = stored.rows[0].json;
+      if (type == 'courses') {
+        response.status(200).json(JSON.parse(jsonData));
+      } else {
+        pool.query('SELECT * FROM pubkeys', [],
         (error, results) => {
           try {
             if (error) throw error;
@@ -285,15 +289,17 @@ const getData = (request, response) => {
                 }
               }
             }
-            response.status(200).json(jsonData);
+            response.status(200).json(JSON.parse(jsonData));
           } catch(e) {
             console.log("Failed reading database");
             console.log(e);
             response.status(500).json({message: e});
           }
         });    
-    } else {
-      response.status(200).json(jsonData);
+      }
+    } catch (error) {
+      console.log(error);
+      response.status(500).json({message: error});
     }
   });
 }
@@ -433,86 +439,72 @@ const updateData = (request, response) => {
       throw 'Wrong file';
     }
 
-    var newfile = false;
-
-    fs.readFile("./data/staff.json", "utf8", (err, staff_file) => {
-      try {
-        if (err) {
-          if (type=='staff') {
-            newfile = true;
-          } else {
-            errors.push("Need to upload an initial staff file first");
-            throw 'No staff file';
+    pool.query('SELECT * FROM pubkeys WHERE id=$1;', [submitted_by],
+      (error, results) => {
+        try {
+          if (error) {
+            errors = ['Database failure'];
+            throw error;
           }
-        }
 
-        var staffJsonData = {};
-        jsonData = fixData(jsonData, type);
-        var validationErrors = validateData(jsonData, type);
-        Object.keys(validationErrors).forEach( k => {
-          errors.push(validationErrors[k]);
-        });
-        errors = errors.flat();
+          // Authorization
+          if (results.rows.length == 0) {
+            errors = ['Data submitted by someone without a registered public key in the system'];
+            throw errors[0];
+          }
+          var found = results.rows[0];
+          if (found.pubkey === undefined || found.pubkey != pubkey ) {
+            errors = ['Wrong authentification'];
+            throw errors[0];
+          }
 
-        if (!newfile) {
-          pool.query('SELECT * FROM pubkeys WHERE id=$1;', [submitted_by],
-          (error, results) => {
-            try {
-              if (error) {
-                errors = ['Database failure'];
-                throw errors[0];
-              }
-
-              // Authorization
-              if (results.rows.length == 0) {
-                errors = ['Data submitted by someone without a registered public key in the system'];
-                throw errors[0];
-              }
-              var found = results.rows[0];
-              if (found.pubkey === undefined || found.pubkey != pubkey ) {
-                errors = ['Wrong authentification'];
-                throw errors[0];
-              }
-
-              if (errors.length != 0) throw 'validation errors';
-
-              // Write new file
-              var stringToWrite = JSON.stringify(jsonData);
-              fs.writeFile('./data/'+type+'.json', stringToWrite, err => {
-                if (err) {
-                  response.status(500).json({message: 'data not updated', errors: errors });
-                  console.log('Error writing file', err);
-                } else {
-                  response.status(200).json({ message: 'data updated' });
-                }
-              });
-            } catch(e) {
-              console.log(e);
-              response.status(500).json({ message: e, errors: errors })        
-            }
+          jsonData = fixData(jsonData, type);
+          var validationErrors = validateData(jsonData, type);
+          Object.keys(validationErrors).forEach( k => {
+            errors.push(validationErrors[k]);
           });
-        } else {
+          errors = errors.flat();
 
           if (errors.length != 0) throw 'validation errors';
 
-          // Write new file
-          var stringToWrite = JSON.stringify(jsonData);
-          fs.writeFile('./data/'+type+'.json', stringToWrite, err => {
-            if (err) {
-              response.status(500).json({message: 'data not updated', errors: errors });
-              console.log('Error writing file', err);
-            } else {
-              response.status(200).json({ message: 'data updated' });
-            }
+          // Write data
+          pool.query(
+           'INSERT INTO data (type, json) VALUES ($1, $2) ON CONFLICT (type) DO UPDATE SET json=$2;',
+            [type, JSON.stringify(jsonData)],
+            (error) => {
+              try {
+                if (error) {
+                  errors = ['Database failure'];
+                  throw error;
+                }
+                pool.query('SELECT * FROM data WHERE type=$1;', [type],
+                  (err, stored) => {
+                  try {
+                    if (err) {
+                      errors = ['Database failure'];
+                      throw err;
+                    }
+                    if (stored.rows.length == 0) throw 'Not inserted';
+                    if (stored.rows[0].json != JSON.stringify(jsonData)) throw 'Not inserted';
+                    response.status(200).json({ message: 'data updated' });
+                  } catch (error2) {
+                    console.log(error2);
+                    response.status(500).json({message: 'data not updated', errors: errors });
+                  }
+                });
+              } catch(e) {
+                response.status(500).json({message: 'data not updated', errors: errors });
+              }
           });
+        } catch(e) {
+          console.log(e);
+          response.status(500).json({ message: e, errors: errors })        
         }
-      } catch(err) {
-        response.status(500).json({message: e, errors: errors });
-      }
     });
+
   } catch(e) {
     console.log(e);
-    response.status(500).json({ message: e, errors: errors })
+    response.status(500).json({ message: e, errors: errors });
   }
 }
 
