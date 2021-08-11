@@ -265,11 +265,10 @@ function preprint_process(tqf) {
 
 const getData = (request, response) => {
   const { type } = request.query;
-  console.log("Requesting type: ", type);
   pool.query('SELECT * FROM data WHERE type=$1;', [type],
     (err, stored) => {
     try {
-      if (err) throw 'Database failure';
+      if (err) throw err;
       if (stored.rows.length == 0) throw 'No data';
       console.log(stored.rows[0]);
       if (stored.rows[0].json === undefined || stored.rows[0].json.length == 0) throw 'No data';
@@ -538,6 +537,7 @@ const registerPubkey = (request, response) => {
             }
           });
         } catch(e) {
+          console.log(e);
           response.status(500).json({message: 'failure'});
         }
       }
