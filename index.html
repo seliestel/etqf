@@ -48,7 +48,13 @@
 
       <!--<a class="github-fork-ribbon" href="" data-ribbon="Beta version" title="">Beta version</a>-->
 
+      <!-- INFO ALERT -->
+      <div class="container alert alert-info" role="alert">
+        <b><i class="fa fa-bullhorn"></i></b> The curriculum mappping (CLOs) for all English major courses has been updated in the application and should be working. Other programs only show white dots for all CLOs. Also, there was a bug that prevented rendering the Word version of the TQF3 for some courses. This has now been fixed. As the application is still in testing mode, there might be other undetected errors. Please inform <a href="mailto:ignasi.rib@mfu.ac.th">ignasi.rib@mfu.ac.th</a> of any technical problems that you encounter (page not loading, function not working, etc). If you have any suggestions or changes to improve the application, they are also welcome. Thank you for your help. 
+      </div>
+
       <!-- NAVIGATION MENU -->
+
       <div class="container">
         <div class="navbar navbar-light bg-light navbar-expand-md">
          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,14 +90,12 @@
           </div>
         </div>
       </div>
-      
+    
+
       <!-- PAGE CONTENT -->
 
       <div class="tab-content">
 
-        <div class="container alert alert-info" role="alert">
-          <b><i class="fa fa-bullhorn"></i></b> The curriculum mappping (CLOs) for all English major courses has been updated in the application and should be working. Other programs only show white dots for all CLOs. Also, there was a bug that prevented rendering the Word version of the TQF3 for some courses. This has now been fixed. As the application is still in testing mode, there might be other undetected errors. Please inform <a href="mailto:ignasi.rib@mfu.ac.th">ignasi.rib@mfu.ac.th</a> of any technical problems that you encounter (page not loading, function not working, etc). If you have any suggestions or changes to improve the application, they are also welcome. Thank you for your help. 
-        </div>
         <!--- TQF3 -->
 
         <div class="container tab-pane fade show active" id="TQF3" role="tabpanel" aria-labelledby="TQF3-tab">
@@ -622,8 +626,8 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tweetnacl/1.0.2/nacl-fast.min.js"></script>
   <script src="https://unpkg.com/jquery.qrcode@1.0.3/jquery.qrcode.min.js"></script>
+  <script src="js/etqf_programs.js"></script>
   <script src="js/etqf_constants.js"></script>
   <script src="js/etqf.js"></script>
   <script src="versions/001/etqf_001.js"></script> <!-- Important: this must be loaded AFTER etqf.js -->
-  <script type="module" src="js/etqf_print_module.js"></script>
 </html>
