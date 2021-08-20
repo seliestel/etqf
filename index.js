@@ -10,7 +10,7 @@ const PizZip = require('pizzip');
 const Docxtemplater = require('docxtemplater');
 const fs = require('fs');
 
-const { programs } = require('./js/etqf_constants.js');
+const { programs } = require('./js/etqf_programs.js');
 
 
 app.use(bodyParser.json({limit: '50mb'}));
@@ -245,10 +245,7 @@ function preprint_process(tqf) {
       "title": k + ". " + curriculum[k]["domain"],
       "outcomes": []
     }
-    console.log("Object for index = ", index);
     Object.keys(curriculum[k]['outcomes']).forEach((out, i) => {
-      console.log(obj);
-      console.log(i);
       if (tqf.outcomes[out]["dot"] != 'x') {
        obj['outcomes'].push(Object.assign(tqf.outcomes[out], {'number' : out}));
        obj['outcomes'][obj['outcomes'].length - 1]['assessment'] = obj['outcomes'][obj['outcomes'].length - 1]['assessment'].join(", ");
@@ -270,7 +267,6 @@ const getData = (request, response) => {
     try {
       if (err) throw err;
       if (stored.rows.length == 0) throw 'No data';
-      console.log(stored.rows[0]);
       if (stored.rows[0].json === undefined || stored.rows[0].json.length == 0) throw 'No data';
       var data = stored.rows[0].json;
       var jsonData = JSON.parse(data);
@@ -597,5 +593,3 @@ app.listen( app.get( 'port' ), function() {
 app.get('*', function(req, res){
   res.status(404).sendFile(path.join(__dirname+'/404.html'));
 });
-
-
