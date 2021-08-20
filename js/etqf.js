@@ -1345,10 +1345,10 @@ function getEmailConfirmation(email, token, success, failure) {
 
     var html = "<p>Thank you for registering to use eTQF. A one-time password token has been automatically generated to confirm your identity:</p><p></p><p><h3>"+token+"</h3></p>";
     html+= "<p>Please go back to the eTQF website and introduce this token to complete your registration. If you have not requested to register or change your password in the eTQF system, you can ignore this email.</p>"
-    html+= "<p>School of Liberal Arts</p>"
+    html+= "<p>School of Liberal Arts</p><p></p><p>THIS IS AN AUTOMATIC EMAIL. DO NOT REPLY.</p>"
     var jsondata = {
       "to": email,
-      "subject":"Your token for eTQF", 
+      "subject":"Your eTQF registration token", 
       "html": html, 
       "sendername": "MFU Liberal Arts"
     }
@@ -1982,4 +1982,3 @@ $(document).ready(function() {
     }
   );
 });
-
