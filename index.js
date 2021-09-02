@@ -36,6 +36,8 @@ Object.defineProperty(Array.prototype, 'flat', {
 function sendMail(req, res) {
   try {
     const sgMail = require('@sendgrid/mail');
+    console.log('Sending email with key');
+    console.log(process.env.SG_MAIL_APIKEY);
     sgMail.setApiKey(process.env.SG_MAIL_APIKEY);
     var data = req.body;
     const msg = {
@@ -513,7 +515,9 @@ const updateData = (request, response) => {
 const registerPubkey = (request, response) => {
   try {
     const { id, pubkey } = request.body;
+    console.log(id);
     if (id === undefined || pubkey === undefined) throw 'No data to add';
+    console.log("Adding pubkey");
     pool.query(
       'INSERT INTO pubkeys (id, pubkey) VALUES ($1, $2) ON CONFLICT (id) DO UPDATE SET pubkey=$2;',
       [id, pubkey],
