@@ -12,15 +12,7 @@ gradings["001"] = {
     "label": "Extended (A, B+, B, C+, C, D+, D, F)",
     "grades": [ "A", "B+", "B", "C+", "C", "D+", "D", "F"],
     "description_en": [ "Excellent", "Very good", "Good", "Fairly good", "Fair", "Poor", "Very poor", "Failed" ],
-    "range": [ "84.99", "79.99", "74.99", "69.99", "64.99", "59.99", "54.99", "0.00" ],
-    "nongrades": [ "W", "I", "M", "P" ],
-    "nongrades_description_en": [ "Withdrawn", "Incomplete", "Missing", "In progress"]    
-  },
-  "A-E": {
-    "label": "Simplified (A, B, C, D, F)",
-    "grades": [ "A", "B", "C", "D", "F" ],
-    "description_en": [ "Excellent", "Good", "Fair", "Poor", "Failed" ],
-    "range": [ "84.99", "74.99", "64.99", "54.99", "0.00" ],
+    "range": [ "84.50", "79.50", "74.50", "69.50", "64.50", "59.50", "54.50", "0.00" ],
     "nongrades": [ "W", "I", "M", "P" ],
     "nongrades_description_en": [ "Withdrawn", "Incomplete", "Missing", "In progress"]    
   },
@@ -206,7 +198,7 @@ TQF3.prototype["001"].validate = function(tqf) {
       errors['semester'] ="Wrong or missing semester in section 1"; 
     if (tqf.venue===undefined || tqf.venue.length == 0) 
       errors['venue'] ="Missing venue in section 1";
-    if (tqf.coordinators===undefined || tqf.coordinators.length == 0)  
+    if (tqf.coordinators===undefined || tqf.coordinators.length == 0 || tqf.coordinators == "Undetermined")  
       errors['coordinators'] ="Missing coordinators in section 1";
     if (tqf.instructors===undefined || tqf.instructors.length == 0)  
       errors['instructors'] ="Missing instructors in section 1";
@@ -234,7 +226,7 @@ TQF3.prototype["001"].validate = function(tqf) {
       for (var i=0; i<tqf.objectives.length; i++) {
         if (tqf.objectives[i] !== undefined && tqf.objectives[i].length > 0) objs.push(tqf.objectives[i]);
         if (tqf.objectives[i].substring(0, 10) == "The course" || tqf.objectives[i].substring(0, 10) == "the course")
-          errors['objectives_phrasing'] = "Objectives in section 2 should not begin with the phrase 'The course aims to', but complete tqf phrase beginning with an action verb in lowercase";
+          errors['objectives_phrasing'] = "Objectives in section 2 should not begin with the phrase 'The course aims to', but complete this phrase beginning with an action verb in lowercase";
         if (tqf.objectives[i].length == 0) {
           missing_objectives = true;
         } else if (tqf.objectives[i].match(/^[a-zA-Z]/) === null) { // string doesn't begin with letter
@@ -258,13 +250,15 @@ TQF3.prototype["001"].validate = function(tqf) {
     var dots = tqf.general.outcomes_map.split('');
     for (var i=0;i<out.length;i++) {
       if (dots[i] != 'x') {
-        if (out[i][1].student === undefined || out[i][1].student.length == 0 || out[i][1].student.substr(0, 24) != "Students will be able to" ) wrong_student.push(out[i][0]); // 
-        if (out[i][1].teaching === undefined || out[i][1].teaching.length == 0 || out[i][1].teaching.substr(0, 16) != "Instructors will") wrong_teaching.push(out[i][0]);  
+        if (out[i][1].student === undefined || out[i][1].student.length == 0 || out[i][1].student.substr(0, 7).toLowerCase() == "student" || out[i][1].student.substr(0, 2).toLowerCase() == "to" ) wrong_student.push(out[i][0]); // 
+        if (out[i][1].teaching === undefined || out[i][1].teaching.length == 0 || out[i][1].teaching.substr(0, 10).toLowerCase() == "instructor" || out[i][1].teaching.substr(0, 4).toLowerCase() == "will") wrong_teaching.push(out[i][0]);  
         // Corrections with regex
-        out[i][1].student = out[i][1].student.charAt(0).toUpperCase() + out[i][1].student.slice(1).trim(); // trim empty spaces
+        //out[i][1].student = out[i][1].student.charAt(0).toUpperCase() + out[i][1].student.slice(1).trim(); // trim empty spaces
+        out[i][1].student = out[i][1].student.trim();
         if (out[i][1].student.match(/[.]$/) === null) out[i][1].student = out[i][1].student + "."; // add punctuation
 
-        out[i][1].teaching = out[i][1].teaching.charAt(0).toUpperCase() + out[i][1].teaching.slice(1).trim(); // trim empty spaces
+        //out[i][1].teaching = out[i][1].teaching.charAt(0).toUpperCase() + out[i][1].teaching.slice(1).trim(); // trim empty spaces
+        out[i][1].teaching = out[i][1].teaching.trim();
         if (out[i][1].teaching.match(/[.]$/) === null) out[i][1].teaching = out[i][1].teaching + "."; // add punctuation
 
       } else {
@@ -273,8 +267,8 @@ TQF3.prototype["001"].validate = function(tqf) {
       }
     }
 
-    if (wrong_student.length > 0) errors['outcomes_student'] ="Wrong or missing student learning outcomes ("+wrong_student.join(", ")+") in section 3 (they should start by 'Students will be able to')";
-    if (wrong_teaching.length > 0) errors['outcomes_teaching'] ="Wrong or missing teaching methods ("+wrong_teaching.join(", ")+") in section 3 (they should start by 'Instructors will')";
+    if (wrong_student.length > 0) errors['outcomes_student'] ="Wrong or missing student learning outcomes ("+wrong_student.join(", ")+") in section 3 (they should COMPLETE, not contain the phrase 'Students will be able to')";
+    if (wrong_teaching.length > 0) errors['outcomes_teaching'] ="Wrong or missing teaching methods ("+wrong_teaching.join(", ")+") in section 3 (they should COMPLETE, not contain the phrase 'Instructors will')";
 
     // Section 4
     if (tqf.weeks===undefined || tqf.weeks.length == 0 ||  (tqf.weeks.length == 1 && tqf.weeks[0].topic.length == 0)) { 
@@ -851,6 +845,8 @@ TQFPrint.prototype["001"].preprint_process = function(tqf) {
     Object.keys(curriculum[k]['outcomes']).forEach((out, i) => {
       if (tqf.outcomes[out]["dot"] != 'x') {
        obj['outcomes'].push(Object.assign(tqf.outcomes[out], {'number' : out}));
+       obj['outcomes'][obj['outcomes'].length - 1]['student'] = "Students will be able to " + obj['outcomes'][obj['outcomes'].length - 1]['student'];
+       obj['outcomes'][obj['outcomes'].length - 1]['teaching'] = "Instructors will " + obj['outcomes'][obj['outcomes'].length - 1]['teaching'];        
        obj['outcomes'][obj['outcomes'].length - 1]['assessment'] = obj['outcomes'][obj['outcomes'].length - 1]['assessment'].join(", ");
       }
     });
@@ -1394,17 +1390,17 @@ TQFForms.prototype["001"].populateOutcomes = function() {
       ).append(
         $('<div class="form-group row">')
           .append(
-            $('<label class="col-sm-4">').text("Student outcome").append('<span class="text-danger">*</span> <span class="text-info fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title="Write the expectations for this course learning outcome from the perspective of the student in specific and clear language, beginning with the phrase \'Students will be able to\' followed by the outcome(s) students are expected to achieve expressed in action verbs."></span>')
+            $('<label class="col-sm-5">').text("Students will be able to...").append('<span class="text-danger">*</span> <span class="text-info fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title="Write the expectations for this course learning outcome from the perspective of the student in specific and clear language, as a continuation to the phrase \'Students will be able to\'. You should describe the outcome(s) students are expected to achieve expressed in action verbs and in a single sentence completing the phrase."></span>')
           ).append(
-            $('<textarea rows="2" class="col-sm-8 form-control outcomesStudent" value="" name="outcomes['+outs[i]+'][student]" placeholder="Students will be able to...">')
+            $('<textarea rows="2" class="col-sm-7 form-control outcomesStudent" value="" name="outcomes['+outs[i]+'][student]">')
         )
       )
       .append(
         $('<div class="form-group row">')
           .append(
-            $('<label class="col-sm-4">').text("Teaching methods").append('<span class="text-danger">*</span> <span class="text-info fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title="Write the teaching methods that instructors will employ to achieve this learning outcome, beginning with the phrase \'Instructors will\' followed by the teaching method(s) to be employed using action verbs."></span>')
+            $('<label class="col-sm-5">').text("Instructors will...").append('<span class="text-danger">*</span> <span class="text-info fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title="Write the teaching methods that instructors will employ to achieve this learning outcome. You should describe the teaching methods using action verbs in a single sentence that continues the phrase \'Instructors will\'"></span>')
           ).append(
-            $('<textarea rows="2" class="col-sm-8 form-control outcomesTeaching" value="" name="outcomes['+outs[i]+'][teaching]" placeholder="Instructors will...">')
+            $('<textarea rows="2" class="col-sm-7 form-control outcomesTeaching" value="" name="outcomes['+outs[i]+'][teaching]">')
         )
       )
     )

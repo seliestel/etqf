@@ -250,6 +250,8 @@ function preprint_process(tqf) {
     Object.keys(curriculum[k]['outcomes']).forEach((out, i) => {
       if (tqf.outcomes[out]["dot"] != 'x') {
        obj['outcomes'].push(Object.assign(tqf.outcomes[out], {'number' : out}));
+       obj['outcomes'][obj['outcomes'].length - 1]['student'] = "Students will be able to " + obj['outcomes'][obj['outcomes'].length - 1]['student'];
+       obj['outcomes'][obj['outcomes'].length - 1]['teaching'] = "Instructors will " + obj['outcomes'][obj['outcomes'].length - 1]['teaching']; 
        obj['outcomes'][obj['outcomes'].length - 1]['assessment'] = obj['outcomes'][obj['outcomes'].length - 1]['assessment'].join(", ");
       }
     });

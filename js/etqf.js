@@ -302,7 +302,7 @@ function populateGeneralSelectFields() {
     $(".yearSelect").append($('<option disabled selected value>').val("").text("-- Year --"));
     for (var y = initial; y<final; y++) {
       y1 = y + 1;
-      $(".yearSelect").append($("<option>").val(parseInt(y)).text(parseInt(y) + " - " + parseInt(y1)));     
+      $(".yearSelect").append($("<option>").val(parseInt(y)).text(parseInt(y)));     
     }
 
     $(".programSelect").empty();
@@ -1847,6 +1847,9 @@ function populateStaff() {
   $(".staffSelect").empty();
   $(".staffSelect").append(
     $('<option disabled selected value>').val("").text("-- Staff member --")
+  );
+  $(".staffSelect").append(
+    $('<option value>').val("Undetermined").text("Undetermined")
   );
   Object.keys(jsonStaff).sort( (a, b) => { return jsonStaff[a]['email'].localeCompare(jsonStaff[b]['email']) }).forEach( id => {
     $(".staffSelect").append(
