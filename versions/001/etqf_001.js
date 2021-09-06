@@ -413,7 +413,7 @@ TQF3.prototype["001"].validate = function(tqf) {
 TQF5.prototype["001"] = function (tqf3, data) {
 
   this.version = "001";
-  
+ 
   this.course = data.course !== undefined ? data.course.toString() : tqf3.course.toString();
   this.year = data.year !== undefined ? data.year : tqf3.year;
   this.semester = data.semester !== undefined ? data.semester : tqf3.semester;
@@ -1150,6 +1150,7 @@ TQFForms.prototype["001"].fillTQF3Form = function() {
 TQFForms.prototype["001"].fillTQF5Form = function(grading) {
   var row;
 
+  console.log("Filling TQF5 form");
   /// Section 2
   var outs = [];
   var domains = {};
