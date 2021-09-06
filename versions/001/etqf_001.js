@@ -1203,9 +1203,8 @@ TQFForms.prototype["001"].fillTQF5Form = function(grading) {
       radio='';
     } 
 
-    text += jsonTQF.outcomes[outs[i]]['student'];
-    text += " ";
-    text += jsonTQF.outcomes[outs[i]]['teaching'];
+    text += "Students will be able to " + jsonTQF.outcomes[outs[i]]['student'];
+    text += " Instructors will " + jsonTQF.outcomes[outs[i]]['teaching'];
     text+="</div>";
 
     $("#achievementOutcomes").append(precede).append(
