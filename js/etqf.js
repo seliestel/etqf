@@ -651,7 +651,7 @@ $(".upload_draft_eTQF3").on('change', function() {
       console.log(err);
       showModal([
         "Unable to proceed",
-        "<p>The file you are trying to upload is not eTQF3 or has been corrupted. Please try again or create a new eTQF3.</p>",
+        "<p>The file you are trying to upload is not an eTQF3 (json) file or has been corrupted. Please try again or create a new eTQF3.</p>",
         "Continue",
         ""
       ]); 
@@ -822,7 +822,7 @@ $(".upload_valid_eTQF3").on('change', function() {
       console.log(err);
       showModal([
         "Warning",
-        "<p>The file you are trying to upload is not a valid eTQF3 or has been corrupted. Please upload a validated eTQF3.</p>",
+        "<p>The file you are trying to upload is not a valid eTQF3 (json) file or has been corrupted. Please upload a validated eTQF3.</p>",
         "Continue",
         ""
       ]); 
@@ -869,7 +869,7 @@ $(".upload_draft_eTQF5").on('change', function() {
       console.log(err);
       showModal([
         "Unable to proceed",
-        "<p>The file you are trying to upload is not eTQF5 or has been corrupted. Please try again or upload a valid eTQF3.</p>",
+        "<p>The file you are trying to upload is not an eTQF5 (json) file or has been corrupted. Please try again or upload a valid eTQF3.</p>",
         "Continue"
       ]); 
       $("#continueButton").on('click', function(evt) { 
@@ -1018,7 +1018,7 @@ $(".upload_valid_eTQF_toSign").on('change', function() {
     } catch(err) {
       showModal([
         "Error",
-        "<p>The file you are trying to upload is not in the correct eTQF format or has been corrupted.</p>",
+        "<p>The file you are trying to upload is not in the correct eTQF (json) format or has been corrupted.</p>",
         "Continue",
         ""
       ]); 
@@ -1222,7 +1222,7 @@ $(".upload_signed_eTQF").on('change', function() {
       }
     } catch(error) {
       console.log(error);
-      if ((error !== undefined) && (typeof error !== 'string')) error = "The file you are trying to upload is not in the correct eTQF format or has been corrupted.";
+      if ((error !== undefined) && (typeof error !== 'string')) error = "The file you are trying to upload is not in the correct eTQF (json) format or has been corrupted.";
       showModal([
         "Unable to proceed",
         "<p>"+error+"</p>",
@@ -1969,6 +1969,7 @@ $(document).ready(function() {
               reset_all_forms();
               $("select").not('.excludeSelect2').select2({ theme: "bootstrap4"});  
               $("#loader").hide();
+              hideModal();
             });  
           });
         },
