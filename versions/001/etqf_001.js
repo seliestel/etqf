@@ -659,18 +659,18 @@ TQF5.prototype["001"].validate = function(tqf) {
     for (var j=0; j<tqf.tasks.length;j++) if (tqf.tasks[j]['verification'] === undefined || tqf.tasks[j]['verification'].length == 0) tqf.tasks[j]['verification'] = "None"; 
 
     // Section 5
-    // Fill empty fields with empty strings
+    // Fill empty fields with None
     for (var j=0; j<tqf.plan.previous.length; j++ ) {
-      if (tqf.plan.previous[j].action.length == 0) tqf.plan.previous[j].action = "";
-      if (tqf.plan.previous[j].result === undefined || tqf.plan.previous[j].result.length == 0) tqf.plan.previous[j].result = "";
+      if (tqf.plan.previous[j].action.length == 0) tqf.plan.previous[j].action = "None";
+      if (tqf.plan.previous[j].result === undefined || tqf.plan.previous[j].result.length == 0) tqf.plan.previous[j].result = "None";
     }
     for (var j=0; j<tqf.plan.current.length; j++ ) {
-      if (tqf.plan.current[j].action.length == 0) tqf.plan.current[j].action = "";
-      if (tqf.plan.current[j].result === undefined || tqf.plan.current[j].result.length == 0) tqf.plan.current[j].result = "";
+      if (tqf.plan.current[j].action.length == 0) tqf.plan.current[j].action = "None";
+      if (tqf.plan.current[j].result === undefined || tqf.plan.current[j].result.length == 0) tqf.plan.current[j].result = "None";
     }
     for (var j=0; j<tqf.plan.future.length; j++ ) {
-      if (tqf.plan.future[j].action.length == 0) tqf.plan.future[j].action = "";
-      if (tqf.plan.future[j].result === undefined || tqf.plan.future[j].result.length == 0) tqf.plan.future[j].result = "";
+      if (tqf.plan.future[j].action.length == 0) tqf.plan.future[j].action = "None";
+      if (tqf.plan.future[j].result === undefined || tqf.plan.future[j].result.length == 0) tqf.plan.future[j].result = "None";
     }
 
     /// Errors 
