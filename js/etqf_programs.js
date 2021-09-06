@@ -24,7 +24,7 @@ const programs = {
       "3": {
         "domain": "Intellectual and Cognitive Skills",
         "outcomes": {
-          "3.1": "Be able to apply the knowledge of English in different contexts and to work effectively with the skills required in the 21st century.",
+          "3.1": "Be able to apply the knowledge of English in different contexts and to work effectively with 21st century skills.",
           "3.2": "Be able to think critically, evaluate arguments rationally, and solve problems systematically.",
           "3.3": "Be able to apply English to create innovations in various fields or to integrate the knowledge of linguistics with other sciences and disciplines.",
           "3.4": "Be able to develop language innovations that benefit the community."

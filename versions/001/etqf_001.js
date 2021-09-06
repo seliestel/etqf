@@ -1295,7 +1295,7 @@ TQFForms.prototype["001"].fillTQF5Form = function(grading) {
       $('<div class="row form-group">').append(
         $('<label class="col-md-4">').text(info)
       ).append(
-        $('<textarea rows="2" class="form-control col-md-8" value="" name="tasks[][verification]" placeholder="Briefly describe the verification of the assessment method.">')
+        $('<textarea rows="2" class="form-control col-md-8" value="" name="tasks[][verification]" placeholder="Provide evidence of assessment method for verification.">')
       )
     );
   });
