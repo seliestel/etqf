@@ -813,7 +813,6 @@ TQFPrint.prototype["001"].preprint_process = function(tqf) {
 
 
   if (tqf.form == "TQF3") {
-
     /// Section 3 : learning outcomes
     Object.keys(tqf.outcomes).forEach( k => { tqf.outcomes[k]['assessment'] = [] });
     tqf.tasks.map(task => { task.outcomes.forEach(out => { tqf.outcomes[out]['assessment'].push(task.method + " (" + task.ratio + "%)" )  })  });
@@ -826,30 +825,29 @@ TQFPrint.prototype["001"].preprint_process = function(tqf) {
     tqf.has.other = tqf.resources.others.length > 0 && tqf.resources.others[0].length > 0;
     tqf.has.grade = tqf.grading.system.length > 0 && tqf.grading.system != 'None';
 
-  } else {
-
-
   }
-
-  // Outcomes
-  var curriculum = programs[tqf.general.program_code]['curriculum'];
-  tqf.outcomes_print = [];
-  var obj;
-  Object.keys(curriculum).forEach( (k, index) => {
-    obj = {
-      "title": k + ". " + curriculum[k]["domain"],
-      "outcomes": []
-    }
-    Object.keys(curriculum[k]['outcomes']).forEach((out, i) => {
-      if (tqf.outcomes[out]["dot"] != 'x') {
-       obj['outcomes'].push(Object.assign(tqf.outcomes[out], {'number' : out}));
-       obj['outcomes'][obj['outcomes'].length - 1]['student'] = "Students will be able to " + obj['outcomes'][obj['outcomes'].length - 1]['student'];
-       obj['outcomes'][obj['outcomes'].length - 1]['teaching'] = "Instructors will " + obj['outcomes'][obj['outcomes'].length - 1]['teaching'];        
-       obj['outcomes'][obj['outcomes'].length - 1]['assessment'] = obj['outcomes'][obj['outcomes'].length - 1]['assessment'].join(", ") + ".";
+    // Outcomes
+    var curriculum = programs[tqf.general.program_code]['curriculum'];
+    tqf.outcomes_print = [];
+    var obj;
+    Object.keys(curriculum).forEach( (k, index) => {
+      obj = {
+        "title": k + ". " + curriculum[k]["domain"],
+        "outcomes": []
       }
+      Object.keys(curriculum[k]['outcomes']).forEach((out, i) => {
+        if (tqf.outcomes[out]["dot"] != 'x') {
+          obj['outcomes'].push(Object.assign(tqf.outcomes[out], {'number' : out}));
+          obj['outcomes'][obj['outcomes'].length - 1]['student'] = "Students will be able to " + obj['outcomes'][obj['outcomes'].length - 1]['student'];
+          obj['outcomes'][obj['outcomes'].length - 1]['teaching'] = "Instructors will " + obj['outcomes'][obj['outcomes'].length - 1]['teaching'];        
+          if (tqf.form == "TQF3") {
+            obj['outcomes'][obj['outcomes'].length - 1]['assessment'] = obj['outcomes'][obj['outcomes'].length - 1]['assessment'].join(", ") + ".";
+          }
+        }
+      });
+      tqf.outcomes_print[index] = JSON.parse(JSON.stringify(obj));
     });
-    tqf.outcomes_print[index] = JSON.parse(JSON.stringify(obj));
-  });
+
   return tqf;
 }
 
