@@ -476,6 +476,8 @@ function showModal(info) {
     $("#"+modal).find(".modal-header").hide();
   }
   $("#"+modal).find(".modal-body").empty().append(info[1]);
+  $("#"+modal).find(".modal-footer-continue").empty();
+  $("#"+modal).find(".modal-footer-dismiss").empty();
   if (info[2] !== undefined && info[2].length > 0) {
     $("#"+modal).find(".modal-footer-continue").append('<button type="button" id="continueButton" class="btn btn-primary"></button>');
     $("#continueButton").text(info[2]);  
