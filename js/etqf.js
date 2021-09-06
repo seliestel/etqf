@@ -857,14 +857,21 @@ $(".upload_draft_eTQF5").on('change', function() {
         $("#continueButton").on('click', function(evt) { 
           evt.stopPropagation();
           hideModal();
+          jsonTQF = new TQF5()[current_version]({}, jsonUpload);
+          if (jsonTQF.signatures.length > 0) {
+           jsonTQF.signatures = [];
+           jsonTQF.has.signature = false;
+          }
+          fillForm(jsonTQF.version, jsonTQF.form);
         })
+      } else {
+        jsonTQF = new TQF5()[current_version]({}, jsonUpload);
+        if (jsonTQF.signatures.length > 0) {
+          jsonTQF.signatures = [];
+          jsonTQF.has.signature = false;
+        }
+        fillForm(jsonTQF.version, jsonTQF.form);
       }
-      jsonTQF = new TQF5()[current_version]({}, jsonUpload);
-      if (jsonTQF.signatures.length > 0) {
-        jsonTQF.signatures = [];
-        jsonTQF.has.signature = false;
-      }
-      fillForm(jsonTQF.version, jsonTQF.form);
     } catch(err) {
       console.log(err);
       showModal([
