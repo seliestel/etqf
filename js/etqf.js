@@ -268,7 +268,6 @@ function fillForm(version, form) {
     }
   } catch(e) {
     console.log(e);
-    hideModal();
     showModal([
       'Incomplete file',
       'The json file you are uploading is incomplete. Press continue to upload it anyway.',
@@ -865,7 +864,6 @@ $(".upload_draft_eTQF5").on('change', function() {
         jsonTQF.signatures = [];
         jsonTQF.has.signature = false;
       }
-      console.log("Filling form");
       fillForm(jsonTQF.version, jsonTQF.form);
     } catch(err) {
       console.log(err);
