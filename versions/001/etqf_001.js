@@ -788,7 +788,7 @@ TQFPrint.prototype["001"] = function () {
 
 TQFPrint.prototype["001"].preprint_process = function(tqf) {
 
-    /// Section 2
+  /// Section 2
   var weeks;
   if (tqf.weeks !== undefined) {
     weeks = tqf.weeks.length;
@@ -828,17 +828,6 @@ TQFPrint.prototype["001"].preprint_process = function(tqf) {
 
   } else {
 
-    // has object
-    has.grade = data.has !== undefined && data.has.grade !== undefined ? data.has.grade : tqf3.has.grade;
-    has.sects = (tqf.sections !== undefined && tqf.sections.length > 0 && tqf.sections[0].section.length > 0);
-    has.eval = (tqf.evaluation !== undefined && tqf.evaluation.type !== undefined && tqf.evaluation.type.length > 0);
-    has.survey_total = (tqf.evaluation !== undefined && tqf.evaluation.survey !== undefined && tqf.evaluation.survey.total !== undefined && tqf.evaluation.survey.total.mean !== undefined && tqf.evaluation.survey.total.mean.length > 0);
-    has.survey_questions = (tqf.evaluation !== undefined && tqf.evaluation.survey !== undefined && tqf.evaluation.survey.questions !== undefined && tqf.evaluation.survey.questions.length > 0 && tqf.evaluation.survey.questions[0].question !== undefined && tqf.evaluation.survey.questions[0].question.length > 0 && tqf.evaluation.survey.questions[0].mean !== undefined && tqf.evaluation.survey.questions[0].mean.length > 0);
-    has.feed = (tqf.evaluation !== undefined && tqf.evaluation.feedback !== undefined && tqf.evaluation.feedback.length > 0);
-    has.repl = (tqf.evaluation !== undefined && tqf.evaluation.reply !== undefined && tqf.evaluation.reply.length > 0);
-    has.preplan = (tqf.plan !== undefined && tqf.plan.previous !== undefined && tqf.plan.previous.length > 0 && tqf.plan.previous[0].action.length > 0);
-    has.curplan = (tqf.plan !== undefined && tqf.plan.current !== undefined && tqf.plan.current.length > 0 && tqf.plan.current[0].action.length > 0);
-    has.futplan = (tqf.plan !== undefined && tqf.plan.future !== undefined && tqf.plan.future.length > 0 && tqf.plan.future[0].action.length > 0);
 
   }
 

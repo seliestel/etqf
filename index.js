@@ -193,7 +193,15 @@ function generateTQF3(jsonData) {
 function preprint_process(tqf) {
 
   /// Section 2
-  var weeks = tqf.weeks.total;
+  var weeks;
+  if (tqf.weeks !== undefined) {
+    weeks = tqf.weeks.length;
+  } else if (tqf.weeksTotal !== undefined) {
+    weeks = tqf.weeksTotal;  
+  } else {
+    weeks = 15;
+  }
+  
   tqf.general.credits_class_total = (parseInt(tqf.general.credits_class) * weeks).toString();
   tqf.general.credits_lab_total = (parseInt(tqf.general.credits_lab) * weeks).toString();
   tqf.general.credits_home_total = (parseInt(tqf.general.credits_home) * weeks).toString();
