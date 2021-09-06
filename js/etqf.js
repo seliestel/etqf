@@ -865,7 +865,7 @@ $(".upload_draft_eTQF5").on('change', function() {
             }
             fillForm(jsonTQF.version, jsonTQF.form);
           } catch(e) {
-            console.log(err);
+            console.log(e);
             showModal([
               "Unable to proceed",
               "<p>The file you are trying to upload is not an eTQF5 (json) file or has been corrupted. Please try again or upload a valid eTQF3.</p>",
