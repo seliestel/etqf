@@ -424,6 +424,7 @@ TQF5.prototype["001"] = function (tqf3, data) {
   this.outcomes = data.outcomes !== undefined ? data.outcomes : setOutcomesTQF5(tqf3);
   this.grading =  data.grading !== undefined ? data.grading : tqf3.grading;
   this.tasks = data.tasks !== undefined ? data.tasks : tqf3.tasks;
+  this.weeksTotal = data.weeksTotal !== undefined ? data.weeksTotal : tqf3.weeks.length;
 
   this.tqf3 = {
     'code': (data.tqf3 !== undefined && data.tqf3.code !== undefined) ? data.tqf3.code : tqf3.validation.code,
@@ -710,7 +711,7 @@ TQF5.prototype["001"].validate = function(tqf) {
     Object.keys(tqf.outcomes).forEach((key) => {
       if (tqf.outcomes[key].achieved != "Yes" && (tqf.outcomes[key].problems.length == 0 || tqf.outcomes[key].problems == "None")) outs.push(key);
     });
-    if (outs.length > 0) errors['outcomes'] = "Problems not indicated in learning outcomes ("+ outs.join(', ')+") that have not been achieved in section 2"; 
+    if (outs.length > 0) errors['outcomes'] = "Some learning outcomes ("+ outs.join(', ')+") have not been achieved, but the reasons/problems are not indicated in section 2"; 
 
     // Section 3
     var missing_section = [];
@@ -747,7 +748,7 @@ TQF5.prototype["001"].validate = function(tqf) {
     Object.keys(tqf.plan).forEach(type => {
       Object.values(tqf.plan[type]).forEach((item, i) => {
         if (item.action === undefined || item.action.length == 0 || item.action == "None") {
-          errors["plan_"+type+"_missing_actions"] = "Some actions in "+type+" plan of section 5 are empty";
+          if (i>0) errors["plan_"+type+"_missing_actions"] = "Some actions in "+type+" plan of section 5 are empty";
         } else if (item.result === undefined || item.result.length == 0) {
           errors["plan_"+type+"_missing_results"] = "Some information about the results of "+type+" plan in section 5 is missing";
         }
@@ -787,8 +788,16 @@ TQFPrint.prototype["001"] = function () {
 
 TQFPrint.prototype["001"].preprint_process = function(tqf) {
 
-  /// Section 2
-  var weeks = tqf.weeks.length;
+    /// Section 2
+  var weeks;
+  if (tqf.weeks !== undefined) {
+    weeks = tqf.weeks.length;
+  } else if (tqf.weeksTotal !== undefined) {
+    weeks = tqf.weeksTotal;  
+  } else {
+    weeks = 15;
+  }
+  
   tqf.general.credits_class_total = (parseInt(tqf.general.credits_class) * weeks).toString();
   tqf.general.credits_lab_total = (parseInt(tqf.general.credits_lab) * weeks).toString();
   tqf.general.credits_home_total = (parseInt(tqf.general.credits_home) * weeks).toString();
