@@ -1848,14 +1848,14 @@ function populateStaff() {
   $(".staffSelect").append(
     $('<option disabled selected value>').val("").text("-- Staff member --")
   );
-  $(".staffSelect").append(
-    $('<option value>').val("Undetermined").text("Undetermined")
-  );
   Object.keys(jsonStaff).sort( (a, b) => { return jsonStaff[a]['email'].localeCompare(jsonStaff[b]['email']) }).forEach( id => {
     $(".staffSelect").append(
       $('<option>').val(id).text(jsonStaff[id]['name'] + ' (' + jsonStaff[id]['email'] + ')')
     );
   });
+  $(".staffSelect").append(
+    $('<option value>').val("Undetermined").text("Undetermined")
+  );
   if (!$.isEmptyObject(jsonStaff) && !$.isEmptyObject(jsonCourses)) {
     $("input").not('.always-disabled').prop('disabled', false);
     $("select").not('.always-disabled').prop('disabled', false);
