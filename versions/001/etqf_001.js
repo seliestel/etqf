@@ -847,7 +847,7 @@ TQFPrint.prototype["001"].preprint_process = function(tqf) {
        obj['outcomes'].push(Object.assign(tqf.outcomes[out], {'number' : out}));
        obj['outcomes'][obj['outcomes'].length - 1]['student'] = "Students will be able to " + obj['outcomes'][obj['outcomes'].length - 1]['student'];
        obj['outcomes'][obj['outcomes'].length - 1]['teaching'] = "Instructors will " + obj['outcomes'][obj['outcomes'].length - 1]['teaching'];        
-       obj['outcomes'][obj['outcomes'].length - 1]['assessment'] = obj['outcomes'][obj['outcomes'].length - 1]['assessment'].join(", ");
+       obj['outcomes'][obj['outcomes'].length - 1]['assessment'] = obj['outcomes'][obj['outcomes'].length - 1]['assessment'].join(", ") + ".";
       }
     });
     tqf.outcomes_print[index] = JSON.parse(JSON.stringify(obj));
