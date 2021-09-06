@@ -857,12 +857,26 @@ $(".upload_draft_eTQF5").on('change', function() {
         $("#continueButton").on('click', function(evt) { 
           evt.stopPropagation();
           hideModal();
-          jsonTQF = new TQF5()[current_version]({}, jsonUpload);
-          if (jsonTQF.signatures.length > 0) {
-           jsonTQF.signatures = [];
-           jsonTQF.has.signature = false;
+          try {
+            jsonTQF = new TQF5()[current_version]({}, jsonUpload);
+            if (jsonTQF.signatures.length > 0) {
+             jsonTQF.signatures = [];
+             jsonTQF.has.signature = false;
+            }
+            fillForm(jsonTQF.version, jsonTQF.form);
+          } catch(e) {
+            console.log(err);
+            showModal([
+              "Unable to proceed",
+              "<p>The file you are trying to upload is not an eTQF5 (json) file or has been corrupted. Please try again or upload a valid eTQF3.</p>",
+              "Continue",
+              ""
+            ]); 
+            $("#continueButton").on('click', function(evt) { 
+              evt.stopPropagation();
+              hideModal();
+            }); 
           }
-          fillForm(jsonTQF.version, jsonTQF.form);
         })
       } else {
         jsonTQF = new TQF5()[current_version]({}, jsonUpload);
