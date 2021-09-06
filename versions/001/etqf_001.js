@@ -43,7 +43,7 @@ gradings["001"] = {
 }
 
 evaluations["001"] = {
-  "Complete student survey": {
+  "Complete": {
   	"label": "Complete MFU student survey",
   	"questions": [
 	    "1. Clear explanation of course objectives, scope, contents and evaluation methods",
@@ -62,7 +62,7 @@ evaluations["001"] = {
 	    "14. Personality and well-dressedness"
   	]
   },
-  "Summary of student survey": {
+  "Summary": {
   	"label": "Summary of MFU student survey"
   },
   "None": {
@@ -656,10 +656,10 @@ TQF5.prototype["001"].validate = function(tqf) {
     });
 
     // Section 3
-    for (var j=0; j<tqf.tasks.length;j++) if (tqf.tasks[j]['verification'] === undefined || tqf.tasks[j]['verification'].length == 0) tqf.tasks[j]['verification'] = ""; 
+    for (var j=0; j<tqf.tasks.length;j++) if (tqf.tasks[j]['verification'] === undefined || tqf.tasks[j]['verification'].length == 0) tqf.tasks[j]['verification'] = "None"; 
 
     // Section 5
-    // Fill empty fields with none
+    // Fill empty fields with empty strings
     for (var j=0; j<tqf.plan.previous.length; j++ ) {
       if (tqf.plan.previous[j].action.length == 0) tqf.plan.previous[j].action = "";
       if (tqf.plan.previous[j].result === undefined || tqf.plan.previous[j].result.length == 0) tqf.plan.previous[j].result = "";
@@ -825,28 +825,43 @@ TQFPrint.prototype["001"].preprint_process = function(tqf) {
     tqf.has.other = tqf.resources.others.length > 0 && tqf.resources.others[0].length > 0;
     tqf.has.grade = tqf.grading.system.length > 0 && tqf.grading.system != 'None';
 
+  } else if (tqf.form == "TQF5") {
+    // has object
+    tqf.has.task = tqf.tasks.length > 0;
+    tqf.has.sects = (tqf.sections.length > 0) && (parseInt(tqf.total.sections) > 0);
+    tqf.has.grade = tqf.grading.system.length > 0 && tqf.grading.system != 'None';
+    tqf.has.eval = tqf.evaluation.type.length > 0;
+    if (tqf.has.eval) tqf.evaluation.label = evaluations["001"][tqf.evaluation.type]["label"];
+    tqf.has.survey_total = tqf.evaluation.survey.total !== undefined && tqf.evaluation.survey.total.responses !== undefined && parseInt(tqf.evaluation.survey.total.responses) > 0;
+    tqf.has.survey_questions = tqf.evaluation.survey.questions !== undefined && tqf.evaluation.survey.questions.length > 0; 
+    tqf.has.feed = tqf.evaluation.feedback !== undefined && tqf.evaluation.feedback.length > 0;
+    tqf.has.repl = tqf.evaluation.reply !== undefined && tqf.evaluation.reply.length > 0;
+    tqf.has.preplan = tqf.plan.previous !== undefined && tqf.plan.previous.length > 0 && tqf.plan.previous[0].action !== undefined && tqf.plan.previous[0].action.length > 0;
+    tqf.has.curplan = tqf.plan.current !== undefined && tqf.plan.current.length > 0 && tqf.plan.current[0].action !== undefined && tqf.plan.current[0].action.length > 0;
+    tqf.has.futplan = tqf.plan.future !== undefined && tqf.plan.future.length > 0 && tqf.plan.future[0].action !== undefined && tqf.plan.future[0].action.length > 0;
   }
-    // Outcomes
-    var curriculum = programs[tqf.general.program_code]['curriculum'];
-    tqf.outcomes_print = [];
-    var obj;
-    Object.keys(curriculum).forEach( (k, index) => {
-      obj = {
-        "title": k + ". " + curriculum[k]["domain"],
-        "outcomes": []
-      }
-      Object.keys(curriculum[k]['outcomes']).forEach((out, i) => {
-        if (tqf.outcomes[out]["dot"] != 'x') {
-          obj['outcomes'].push(Object.assign(tqf.outcomes[out], {'number' : out}));
-          obj['outcomes'][obj['outcomes'].length - 1]['student'] = "Students will be able to " + obj['outcomes'][obj['outcomes'].length - 1]['student'];
-          obj['outcomes'][obj['outcomes'].length - 1]['teaching'] = "Instructors will " + obj['outcomes'][obj['outcomes'].length - 1]['teaching'];        
-          if (tqf.form == "TQF3") {
-            obj['outcomes'][obj['outcomes'].length - 1]['assessment'] = obj['outcomes'][obj['outcomes'].length - 1]['assessment'].join(", ") + ".";
-          }
+
+  // Outcomes
+  var curriculum = programs[tqf.general.program_code]['curriculum'];
+  tqf.outcomes_print = [];
+  var obj;
+  Object.keys(curriculum).forEach( (k, index) => {
+    obj = {
+      "title": k + ". " + curriculum[k]["domain"],
+      "outcomes": []
+    }
+    Object.keys(curriculum[k]['outcomes']).forEach((out, i) => {
+      if (tqf.outcomes[out]["dot"] != 'x') {
+        obj['outcomes'].push(Object.assign(tqf.outcomes[out], {'number' : out}));
+        obj['outcomes'][obj['outcomes'].length - 1]['student'] = "Students will be able to " + obj['outcomes'][obj['outcomes'].length - 1]['student'];
+        obj['outcomes'][obj['outcomes'].length - 1]['teaching'] = "Instructors will " + obj['outcomes'][obj['outcomes'].length - 1]['teaching'];        
+        if (tqf.form == "TQF3") {
+          obj['outcomes'][obj['outcomes'].length - 1]['assessment'] = obj['outcomes'][obj['outcomes'].length - 1]['assessment'].join(", ") + ".";
         }
-      });
-      tqf.outcomes_print[index] = JSON.parse(JSON.stringify(obj));
+      }
     });
+    tqf.outcomes_print[index] = JSON.parse(JSON.stringify(obj));
+  });
 
   return tqf;
 }
