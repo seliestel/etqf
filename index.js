@@ -192,6 +192,7 @@ function generateTQF3(jsonData) {
 
 function preprint_process(tqf) {
 
+
   /// Section 2
   var weeks;
   if (tqf.weeks !== undefined) {
@@ -217,7 +218,6 @@ function preprint_process(tqf) {
 
 
   if (tqf.form == "TQF3") {
-
     /// Section 3 : learning outcomes
     Object.keys(tqf.outcomes).forEach( k => { tqf.outcomes[k]['assessment'] = [] });
     tqf.tasks.map(task => { task.outcomes.forEach(out => { tqf.outcomes[out]['assessment'].push(task.method + " (" + task.ratio + "%)" )  })  });
@@ -230,20 +230,20 @@ function preprint_process(tqf) {
     tqf.has.other = tqf.resources.others.length > 0 && tqf.resources.others[0].length > 0;
     tqf.has.grade = tqf.grading.system.length > 0 && tqf.grading.system != 'None';
 
-  } else {
-
+  } else if (tqf.form == "TQF5") {
     // has object
-    has.grade = data.has !== undefined && data.has.grade !== undefined ? data.has.grade : tqf3.has.grade;
-    has.sects = (tqf.sections !== undefined && tqf.sections.length > 0 && tqf.sections[0].section.length > 0);
-    has.eval = (tqf.evaluation !== undefined && tqf.evaluation.type !== undefined && tqf.evaluation.type.length > 0);
-    has.survey_total = (tqf.evaluation !== undefined && tqf.evaluation.survey !== undefined && tqf.evaluation.survey.total !== undefined && tqf.evaluation.survey.total.mean !== undefined && tqf.evaluation.survey.total.mean.length > 0);
-    has.survey_questions = (tqf.evaluation !== undefined && tqf.evaluation.survey !== undefined && tqf.evaluation.survey.questions !== undefined && tqf.evaluation.survey.questions.length > 0 && tqf.evaluation.survey.questions[0].question !== undefined && tqf.evaluation.survey.questions[0].question.length > 0 && tqf.evaluation.survey.questions[0].mean !== undefined && tqf.evaluation.survey.questions[0].mean.length > 0);
-    has.feed = (tqf.evaluation !== undefined && tqf.evaluation.feedback !== undefined && tqf.evaluation.feedback.length > 0);
-    has.repl = (tqf.evaluation !== undefined && tqf.evaluation.reply !== undefined && tqf.evaluation.reply.length > 0);
-    has.preplan = (tqf.plan !== undefined && tqf.plan.previous !== undefined && tqf.plan.previous.length > 0 && tqf.plan.previous[0].action.length > 0);
-    has.curplan = (tqf.plan !== undefined && tqf.plan.current !== undefined && tqf.plan.current.length > 0 && tqf.plan.current[0].action.length > 0);
-    has.futplan = (tqf.plan !== undefined && tqf.plan.future !== undefined && tqf.plan.future.length > 0 && tqf.plan.future[0].action.length > 0);
-
+    tqf.has.task = tqf.tasks.length > 0;
+    tqf.has.sects = (tqf.sections.length > 0) && (parseInt(tqf.total.sections) > 0);
+    tqf.has.grade = tqf.grading.system.length > 0 && tqf.grading.system != 'None';
+    tqf.has.eval = tqf.evaluation.type.length > 0;
+    if (tqf.has.eval) tqf.evaluation.label = evaluations["001"][tqf.evaluation.type]["label"];
+    tqf.has.survey_total = tqf.evaluation.survey.total !== undefined && tqf.evaluation.survey.total.responses !== undefined && parseInt(tqf.evaluation.survey.total.responses) > 0;
+    tqf.has.survey_questions = tqf.evaluation.survey.questions !== undefined && tqf.evaluation.survey.questions.length > 0; 
+    tqf.has.feed = tqf.evaluation.feedback !== undefined && tqf.evaluation.feedback.length > 0;
+    tqf.has.repl = tqf.evaluation.reply !== undefined && tqf.evaluation.reply.length > 0;
+    tqf.has.preplan = tqf.plan.previous !== undefined && tqf.plan.previous.length > 0 && tqf.plan.previous[0].action !== undefined && tqf.plan.previous[0].action.length > 0;
+    tqf.has.curplan = tqf.plan.current !== undefined && tqf.plan.current.length > 0 && tqf.plan.current[0].action !== undefined && tqf.plan.current[0].action.length > 0;
+    tqf.has.futplan = tqf.plan.future !== undefined && tqf.plan.future.length > 0 && tqf.plan.future[0].action !== undefined && tqf.plan.future[0].action.length > 0;
   }
 
   // Outcomes
@@ -257,10 +257,12 @@ function preprint_process(tqf) {
     }
     Object.keys(curriculum[k]['outcomes']).forEach((out, i) => {
       if (tqf.outcomes[out]["dot"] != 'x') {
-       obj['outcomes'].push(Object.assign(tqf.outcomes[out], {'number' : out}));
-       obj['outcomes'][obj['outcomes'].length - 1]['student'] = "Students will be able to " + obj['outcomes'][obj['outcomes'].length - 1]['student'];
-       obj['outcomes'][obj['outcomes'].length - 1]['teaching'] = "Instructors will " + obj['outcomes'][obj['outcomes'].length - 1]['teaching']; 
-       obj['outcomes'][obj['outcomes'].length - 1]['assessment'] = obj['outcomes'][obj['outcomes'].length - 1]['assessment'].join(", ")+ ".";
+        obj['outcomes'].push(Object.assign(tqf.outcomes[out], {'number' : out}));
+        obj['outcomes'][obj['outcomes'].length - 1]['student'] = "Students will be able to " + obj['outcomes'][obj['outcomes'].length - 1]['student'];
+        obj['outcomes'][obj['outcomes'].length - 1]['teaching'] = "Instructors will " + obj['outcomes'][obj['outcomes'].length - 1]['teaching'];        
+        if (tqf.form == "TQF3") {
+          obj['outcomes'][obj['outcomes'].length - 1]['assessment'] = obj['outcomes'][obj['outcomes'].length - 1]['assessment'].join(", ") + ".";
+        }
       }
     });
     tqf.outcomes_print[index] = JSON.parse(JSON.stringify(obj));
