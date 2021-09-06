@@ -468,7 +468,9 @@ $(".reset-page").on('click', function(evt) {
 /// Modal control ///
 
 function showModal(info) {
-  var modal = "multiModal"
+  var modal = "multiModal";
+  console.log("Showing modal with content: ", info[1]);
+
   if (info[0] !== undefined && info[0].length > 0) {
     $("#"+modal).find(".modal-header").show();
     $("#"+modal).find(".modal-title").text(info[0]);
@@ -476,21 +478,17 @@ function showModal(info) {
     $("#"+modal).find(".modal-header").hide();
   }
   $("#"+modal).find(".modal-body").empty().append(info[1]);
-  $("#"+modal).find(".modal-footer-continue").empty();
-  $("#"+modal).find(".modal-footer-dismiss").empty();
+  $("#"+modal).find(".modal-footer-continue").empty().hide();
+  $("#"+modal).find(".modal-footer-dismiss").empty().hide();
   if (info[2] !== undefined && info[2].length > 0) {
     $("#"+modal).find(".modal-footer-continue").append('<button type="button" id="continueButton" class="btn btn-primary"></button>');
     $("#continueButton").text(info[2]);  
     $("#"+modal).find(".modal-footer-continue").show();
-  } else {
-    $("#"+modal).find(".modal-footer-continue").hide();
   }
   if (info[3] !== undefined && info[3].length > 0) {  
     $("#"+modal).find(".modal-footer-dismiss").append('<button type="button" id="dismissButton" class="btn btn-secondary" data-bs-dismiss="modal"></button>');
     $("#dismissButton").text(info[3]);
     $("#"+modal).find(".modal-footer-dismiss").show();
-  } else {
-    $("#"+modal).find(".modal-footer-dismiss").hide();
   }
   $("#"+modal).modal({ backdrop: 'static', keyboard: false });
 }
@@ -872,7 +870,8 @@ $(".upload_draft_eTQF5").on('change', function() {
       showModal([
         "Unable to proceed",
         "<p>The file you are trying to upload is not an eTQF5 (json) file or has been corrupted. Please try again or upload a valid eTQF3.</p>",
-        "Continue"
+        "Continue",
+        ""
       ]); 
       $("#continueButton").on('click', function(evt) { 
         evt.stopPropagation();
