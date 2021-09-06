@@ -870,8 +870,7 @@ $(".upload_draft_eTQF5").on('change', function() {
       showModal([
         "Unable to proceed",
         "<p>The file you are trying to upload is not eTQF5 or has been corrupted. Please try again or upload a valid eTQF3.</p>",
-        "Continue",
-        ""
+        "Continue"
       ]); 
       $("#continueButton").on('click', function(evt) { 
         evt.stopPropagation();
