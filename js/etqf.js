@@ -1923,8 +1923,8 @@ function clear_TQF_forms() {
 
 function reset_all_forms() {
   clear_TQF_forms();
-  $("input").val("");
-  $("textarea").val('');
+  $("input").not('.hasDefault').val("");
+  $("textarea").not('.hasDefault').val('');
   var select2_exists = ($("select").filter('.select2-hidden-accessible').length > 0);
   if (select2_exists) $("select").not('.excludeSelect2').select2("destroy");
   $("select").val("");
