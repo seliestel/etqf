@@ -1401,17 +1401,17 @@ TQFForms.prototype["001"].populateOutcomes = function() {
       ).append(
         $('<div class="form-group row">')
           .append(
-            $('<label class="col-sm-5">').text("Students will be able to...").append('<span class="text-danger">*</span> <span class="text-info fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title="Write the expectations for this course learning outcome from the perspective of the student in specific and clear language, as a continuation to the phrase \'Students will be able to\'. You should describe the outcome(s) students are expected to achieve expressed in action verbs and in a single sentence completing the phrase."></span>')
+            $('<label class="col-sm-12">').text("Students will be able to...").append('<span class="text-danger">*</span> <span class="text-info fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title="Write the expectations for this course learning outcome from the perspective of the student in specific and clear language, as a continuation to the phrase \'Students will be able to\'. You should describe the outcome(s) students are expected to achieve expressed in action verbs and in a single sentence completing the phrase."></span>')
           ).append(
-            $('<textarea rows="2" class="col-sm-7 form-control outcomesStudent" value="" name="outcomes['+outs[i]+'][student]">')
+            $('<textarea rows="2" class="col-sm-12 form-control outcomesStudent" value="" name="outcomes['+outs[i]+'][student]">')
         )
       )
       .append(
         $('<div class="form-group row">')
           .append(
-            $('<label class="col-sm-5">').text("Instructors will...").append('<span class="text-danger">*</span> <span class="text-info fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title="Write the teaching methods that instructors will employ to achieve this learning outcome. You should describe the teaching methods using action verbs in a single sentence that continues the phrase \'Instructors will\'"></span>')
+            $('<label class="col-sm-12">').text("Instructors will...").append('<span class="text-danger">*</span> <span class="text-info fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title="Write the teaching methods that instructors will employ to achieve this learning outcome. You should describe the teaching methods using action verbs in a single sentence that continues the phrase \'Instructors will\'"></span>')
           ).append(
-            $('<textarea rows="2" class="col-sm-7 form-control outcomesTeaching" value="" name="outcomes['+outs[i]+'][teaching]">')
+            $('<textarea rows="2" class="col-sm-12 form-control outcomesTeaching" value="" name="outcomes['+outs[i]+'][teaching]">')
         )
       )
     )
