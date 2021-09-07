@@ -9,7 +9,7 @@
 /* GLOBAL OBJECTS */
 gradings["001"] = {
   "A-F": {
-    "label": "Extended (A, B+, B, C+, C, D+, D, F)",
+    "label": "Standard (A, B+, B, C+, C, D+, D, F)",
     "grades": [ "A", "B+", "B", "C+", "C", "D+", "D", "F"],
     "description_en": [ "Excellent", "Very good", "Good", "Fairly good", "Fair", "Poor", "Very poor", "Failed" ],
     "range": [ "84.50", "79.50", "74.50", "69.50", "64.50", "59.50", "54.50", "0.00" ],
