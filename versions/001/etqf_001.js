@@ -269,7 +269,7 @@ TQF3.prototype["001"].validate = function(tqf) {
         } else {
           if (out[i][1].student === undefined || out[i][1].student.length == 0 || out[i][1].student.substr(0, 7).toLowerCase() == "student" || out[i][1].student.substr(0, 2).toLowerCase() == "to" ) {
             wrong_student.push(out[i][0]);
-          } else if (!bloom_verbs.includes(out[i][1].student.split(" ")[0])) {
+          } else if (!bloom_verbs.includes(out[i][1].student.split(" ")[0].toLowerCase())) {
             wrong_student_verb.push(out[i][0]);
           } 
 
@@ -278,12 +278,10 @@ TQF3.prototype["001"].validate = function(tqf) {
           }  
 
           // Corrections with regex
-          //out[i][1].student = out[i][1].student.charAt(0).toUpperCase() + out[i][1].student.slice(1).trim(); // trim empty spaces
-          out[i][1].student = out[i][1].student.trim();
+          out[i][1].student = out[i][1].student.charAt(0).toLowerCase() + out[i][1].student.slice(1).trim(); // start with lower case and trim empty spaces
           if (out[i][1].student.match(/[.]$/) === null) out[i][1].student = out[i][1].student + "."; // add punctuation
 
-          //out[i][1].teaching = out[i][1].teaching.charAt(0).toUpperCase() + out[i][1].teaching.slice(1).trim(); // trim empty spaces
-          out[i][1].teaching = out[i][1].teaching.trim();
+          out[i][1].teaching = out[i][1].teaching.charAt(0).toLowerCase() + out[i][1].teaching.slice(1).trim(); // start with lower case and trim empty spaces
           if (out[i][1].teaching.match(/[.]$/) === null) out[i][1].teaching = out[i][1].teaching + "."; // add punctuation
 
         }

@@ -34,6 +34,7 @@ const bloom_verbs = [
     "codify",
     "collect",
     "combine",
+    "communicate",
     "compare",
     "complete",
     "comply",
