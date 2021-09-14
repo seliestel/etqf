@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="Ignasi Ribó"></meta>
+  <title>eTQF</title>
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"/></script>    
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <style>
+      @media (min-width: 960px) {
+        .container{ max-width: 960px }
+      }
+      #bloom-list {
+        -webkit-column-count: 6;
+        column-count: 6;
+      }
+  </style>
+</head>
+
+<body>
+  <div class="tab-content">
+    <div class="container tab-pane fade show active" id="updateContainer" role="tabpanel" aria-labelledby="update-tab" >
+      <h1 class="mt-3 text-center" style="margin-top: 60px; margin-bottom: 60px">Valid Action Verbs</h1>
+      <p><b>The following verbs, derived from Bloom's Taxonomy, may be used when writing the STUDENT LEARNING OUTCOMES on section 3 of the eTQF3. Verbs not included in this list will not be validated.</b></p>
+      <div class="row" style="margin-top: 3em; margin-bottom: 3em;">
+        <div class="col-md-12">
+          <ul id="bloom-list"></ul>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 3em; margin-bottom: 3em;">
+        <div class="col-md-12">
+          <p>When writing the intended learning outcomes, it is also important to select action verbs adequate to the cognitive level required. You can find more information about the different levels in Bloom's taxonomy here:</p>
+          <ul >
+            <li><a href="https://cft.vanderbilt.edu/guides-sub-pages/blooms-taxonomy/" target="_blank">https://cft.vanderbilt.edu/guides-sub-pages/blooms-taxonomy/</a></li>
+            <li><a href="https://tips.uark.edu/using-blooms-taxonomy/" target="_blank">https://tips.uark.edu/using-blooms-taxonomy/</a></li>
+            <li><a href="https://uwaterloo.ca/centre-for-teaching-excellence/teaching-resources/teaching-tips/planning-courses-and-assignments/course-design/blooms-taxonomy" target="_blank">https://uwaterloo.ca/centre-for-teaching-excellence/teaching-resources/teaching-tips/planning-courses-and-assignments/course-design/blooms-taxonomy/</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div> 
+</body>
+<script src="js/etqf_constants.js"></script>
+<script>
+  $(document).ready(function() {
+    for (var i=0; i<bloom_verbs.length;i++) {
+      $("#bloom-list").append($('<li>').text(bloom_verbs[i]));  
+    }
+  });
+</script>

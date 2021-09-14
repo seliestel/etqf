@@ -173,6 +173,18 @@ TQF3.prototype["001"].validate = function(tqf) {
 
     /* Fix radio output for groups to ensure true/false values */
     for (var i=0; i<tqf.tasks.length; i++) tqf.tasks[i].group = tqf.tasks[i].group !== undefined; 
+
+    // Preprocess
+    Object.keys(tqf.outcomes).forEach( k => {
+      if (tqf.outcomes[k]['dot'] == "x") {
+        tqf.outcomes[k]['student'] = 'N/A';
+        tqf.outcomes[k]['teaching'] = 'N/A';
+      }
+      if (tqf.outcomes[k]['dot'] == "o" && tqf.outcomes[k]['student'].length == 0 && tqf.outcomes[k]['teaching'].length == 0 ) {
+        tqf.outcomes[k]['student'] = 'N/A';
+        tqf.outcomes[k]['teaching'] = 'N/A';
+      }
+    });
     
     if (tqf.version !== "001" || tqf.form !== "TQF3") throw 'Incomplete form';
 
@@ -245,30 +257,42 @@ TQF3.prototype["001"].validate = function(tqf) {
 
     // Section 3
     var wrong_student = [];
+    var wrong_student_verb = [];
     var wrong_teaching = [];
     var out = Object.entries(tqf.outcomes);
     var dots = tqf.general.outcomes_map.split('');
+
     for (var i=0;i<out.length;i++) {
       if (dots[i] != 'x') {
-        if (out[i][1].student === undefined || out[i][1].student.length == 0 || out[i][1].student.substr(0, 7).toLowerCase() == "student" || out[i][1].student.substr(0, 2).toLowerCase() == "to" ) wrong_student.push(out[i][0]); // 
-        if (out[i][1].teaching === undefined || out[i][1].teaching.length == 0 || out[i][1].teaching.substr(0, 10).toLowerCase() == "instructor" || out[i][1].teaching.substr(0, 4).toLowerCase() == "will") wrong_teaching.push(out[i][0]);  
-        // Corrections with regex
-        //out[i][1].student = out[i][1].student.charAt(0).toUpperCase() + out[i][1].student.slice(1).trim(); // trim empty spaces
-        out[i][1].student = out[i][1].student.trim();
-        if (out[i][1].student.match(/[.]$/) === null) out[i][1].student = out[i][1].student + "."; // add punctuation
+        if (out[i][1].student !== undefined && (out[i][1].student.length == 0 || out[i][1].student == "N/A") && out[i][1].teaching !== undefined && (out[i][1].teaching.length == 0 || out[i][1].teaching == "N/A") && dots[i] == 'o') {
+          // Empty white dot
+        } else {
+          if (out[i][1].student === undefined || out[i][1].student.length == 0 || out[i][1].student.substr(0, 7).toLowerCase() == "student" || out[i][1].student.substr(0, 2).toLowerCase() == "to" ) {
+            wrong_student.push(out[i][0]);
+          } else if (!bloom_verbs.includes(out[i][1].student.split(" ")[0])) {
+            wrong_student_verb.push(out[i][0]);
+          } 
 
-        //out[i][1].teaching = out[i][1].teaching.charAt(0).toUpperCase() + out[i][1].teaching.slice(1).trim(); // trim empty spaces
-        out[i][1].teaching = out[i][1].teaching.trim();
-        if (out[i][1].teaching.match(/[.]$/) === null) out[i][1].teaching = out[i][1].teaching + "."; // add punctuation
+          if (out[i][1].teaching === undefined || out[i][1].teaching.length == 0 || out[i][1].teaching.substr(0, 10).toLowerCase() == "instructor" || out[i][1].teaching.substr(0, 4).toLowerCase() == "will") {
+            wrong_teaching.push(out[i][0]);
+          }  
 
-      } else {
-        out[i][1].student = "";
-        out[i][1].teaching = "";
+          // Corrections with regex
+          //out[i][1].student = out[i][1].student.charAt(0).toUpperCase() + out[i][1].student.slice(1).trim(); // trim empty spaces
+          out[i][1].student = out[i][1].student.trim();
+          if (out[i][1].student.match(/[.]$/) === null) out[i][1].student = out[i][1].student + "."; // add punctuation
+
+          //out[i][1].teaching = out[i][1].teaching.charAt(0).toUpperCase() + out[i][1].teaching.slice(1).trim(); // trim empty spaces
+          out[i][1].teaching = out[i][1].teaching.trim();
+          if (out[i][1].teaching.match(/[.]$/) === null) out[i][1].teaching = out[i][1].teaching + "."; // add punctuation
+
+        }
       }
     }
 
-    if (wrong_student.length > 0) errors['outcomes_student'] ="Wrong or missing student learning outcomes ("+wrong_student.join(", ")+") in section 3 (they should COMPLETE, not contain the phrase 'Students will be able to')";
-    if (wrong_teaching.length > 0) errors['outcomes_teaching'] ="Wrong or missing teaching methods ("+wrong_teaching.join(", ")+") in section 3 (they should COMPLETE, not contain the phrase 'Instructors will')";
+    if (wrong_student.length > 0) errors['outcomes_student'] ="Student learning outcomes "+wrong_student.join(", ")+" in section 3 are wrong or missing (they should COMPLETE, not contain the phrase 'Students will be able to')";
+    if (wrong_teaching.length > 0) errors['outcomes_teaching'] ="Teaching methods "+wrong_teaching.join(", ")+" in section 3 are wrong or missing (they should COMPLETE, not contain the phrase 'Instructors will')";
+    if (wrong_student_verb.length > 0) errors['outcomes_student_verb'] = "Student learning outcomes "+ wrong_student_verb.join(", ") +" in section 3 should begin with a verb from Bloom's taxonomy (see list of valid verbs by clicking on the link above the student learning outcome box)";
 
     // Section 4
     if (tqf.weeks===undefined || tqf.weeks.length == 0 ||  (tqf.weeks.length == 1 && tqf.weeks[0].topic.length == 0)) { 
@@ -384,9 +408,9 @@ TQF3.prototype["001"].validate = function(tqf) {
     });
     if (findDuplicates(refs).length > 0) errors["duplicate_resources"] = "Some resources (textbooks, references or other) are duplicated in section 5.";
 
-    // End
 
-    if (Object.keys(errors).length === 0) {
+    // End
+    if (Object.keys(errors).length == 0) {
       tqf.has.validated = true;
       if (tqf.validation.errors !== undefined) delete tqf.validation.errors;
       tqf.validation.code = tqf.getValidationCode();
@@ -396,7 +420,7 @@ TQF3.prototype["001"].validate = function(tqf) {
       tqf.validation.errors = errors;
     }
     return tqf.has.validated;
-
+  
   } catch(e) {
     console.log(e);
     if (e !== undefined && typeof error !== 'string') e = "Failed validation";
@@ -647,7 +671,13 @@ TQF5.prototype["001"].validate = function(tqf) {
     Object.keys(tqf.outcomes).forEach( k => {
       if (tqf.outcomes[k]['problems'] === undefined || tqf.outcomes[k]['problems'].length == 0) tqf.outcomes[k]['problems'] = "None";
       if (tqf.outcomes[k]['achieved'] === undefined || tqf.outcomes[k]['achieved'].length == 0 || tqf.outcomes[k]['achieved'] == "false" || tqf.outcomes[k]['achieved'] === false) tqf.outcomes[k]['achieved'] = "No"; 
-      if (tqf.outcomes[k]['dot'] === "x") {
+      if (tqf.outcomes[k]['dot'] == "x") {
+        tqf.outcomes[k]['student'] = 'N/A';
+        tqf.outcomes[k]['teaching'] = 'N/A';
+        tqf.outcomes[k]['achieved'] = 'N/A';        
+        tqf.outcomes[k]['problems'] = 'N/A';        
+      }
+      if (tqf.outcomes[k]['dot'] == "o" && tqf.outcomes[k]['student'].length == 0 && tqf.outcomes[k]['teaching'].length == 0 ) {
         tqf.outcomes[k]['student'] = 'N/A';
         tqf.outcomes[k]['teaching'] = 'N/A';
         tqf.outcomes[k]['achieved'] = 'N/A';        
@@ -1401,7 +1431,9 @@ TQFForms.prototype["001"].populateOutcomes = function() {
       ).append(
         $('<div class="form-group row justify-content-center">')
           .append(
-            $('<label class="col-sm-10">').text("Students will be able to...").append('<span class="text-danger">*</span> <span class="text-info fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title="Write the expectations for this course learning outcome from the perspective of the student in specific and clear language, as a continuation to the phrase \'Students will be able to\'. You should describe the outcome(s) students are expected to achieve expressed in action verbs and in a single sentence completing the phrase."></span>')
+            $('<label class="col-sm-10">').text("Students will be able to...")
+              .append('<span class="text-danger">*</span> <span class="text-info fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title="Write the expectations for this course learning outcome from the perspective of the student in specific and clear language, as a continuation to the phrase \'Students will be able to\'. You should describe the outcome(s) students are expected to achieve expressed in a single sentence completing the phrase and using one or more verbs from Bloom\'s taxonomy (click the link to the right to see a list of the valid verbs)."></span>')
+              .append($('<a href="/bloom" target="_blank" style="margin-left: 1em;">Valid verbs</a>'))
           ).append(
             $('<textarea rows="2" class="col-sm-10 form-control outcomesStudent" value="" name="outcomes['+outs[i]+'][student]">')
         )

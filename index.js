@@ -590,6 +590,11 @@ router.get('/404',function(req,res){
   res.sendFile(path.join(__dirname+'/404.html'));
 });
 
+// Bloom's Taxonomy accepted verbs
+router.get('/bloom',function(req,res){
+  res.sendFile(path.join(__dirname+'/bloom.html'));
+});
+
 // Update page
 router.get('/update',function(req,res){
   res.sendFile(path.join(__dirname+'/update.html'));
