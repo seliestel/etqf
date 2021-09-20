@@ -15,12 +15,6 @@
       @media (min-width: 960px) {
         .container{ max-width: 960px }
       }
-      /*
-      #bloom-list {
-        -webkit-column-count: 6;
-        column-count: 6;
-      }
-      */
   </style>
 </head>
 
@@ -55,7 +49,7 @@
   $(document).ready(function() {
     var col = $(".column").first();
     Object.entries(bloom_verbs).forEach((entry) => {
-      $(col).append($("<h3>").text(entry[0]));
+      $(col).append($("<h3 class='text-center'>").text(entry[0]));
       $(col).append($("<ul>"));
       for (var i=0; i<entry[1].length;i++) {
         $(col).find("ul").append($("<li>").text(entry[1][i]));
