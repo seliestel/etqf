@@ -43,6 +43,7 @@
           <table id="bloom-table">
             <tr id="blomm-headers"></tr>
           </table>
+          <ul id="bloom-list"></ul>
         </div>
       </div>
       <div class="row" style="margin-top: 3em; margin-bottom: 3em;">
@@ -62,11 +63,11 @@
 <script>
   $(document).ready(function() {
     var tr;
-    Object.entries(bloom_verbs).forEach((key, values) => {
-      $("#blomm-headers").append($("<th>").text(key));
+    Object.entries(bloom_verbs).forEach((entry) => {
+      $("#blomm-headers").append($("<th>").text(entry[0]));
       tr = $("<tr>");
-      for (var i=0; i<values.length;i++) {
-        $(tr).append($("<td>").text(values[i]));
+      for (var i=0; i<entry[1].length;i++) {
+        $(tr).append($("<td>").text(entry[1][i]));
       }  
       $("#bloom-table").append($(tr));
     });
