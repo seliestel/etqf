@@ -269,7 +269,7 @@ TQF3.prototype["001"].validate = function(tqf) {
         } else {
           if (out[i][1].student === undefined || out[i][1].student.length == 0 || out[i][1].student.substr(0, 7).toLowerCase() == "student" || out[i][1].student.substr(0, 2).toLowerCase() == "to" ) {
             wrong_student.push(out[i][0]);
-          } else if (!bloom_verbs.includes(out[i][1].student.split(" ")[0].toLowerCase())) {
+          } else if (!Object.values(bloom_verbs).flat().includes(out[i][1].student.split(" ")[0].toLowerCase())) {
             wrong_student_verb.push(out[i][0]);
           } 
 

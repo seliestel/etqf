@@ -15,9 +15,20 @@
       @media (min-width: 960px) {
         .container{ max-width: 960px }
       }
+      /*
       #bloom-list {
         -webkit-column-count: 6;
         column-count: 6;
+      }
+      */
+      table {
+        display: table;
+      }
+      table tr {
+        display: table-cell;
+      }
+      table tr td {
+        display: block;
       }
   </style>
 </head>
@@ -29,7 +40,9 @@
       <p><b>The following verbs, derived from Bloom's Taxonomy, may be used when writing the STUDENT LEARNING OUTCOMES on section 3 of the eTQF3. Verbs not included in this list will not be validated.</b></p>
       <div class="row" style="margin-top: 3em; margin-bottom: 3em;">
         <div class="col-md-12">
-          <ul id="bloom-list"></ul>
+          <table id="bloom-table">
+            <tr id="blomm-headers"></tr>
+          </table>
         </div>
       </div>
       <div class="row" style="margin-top: 3em; margin-bottom: 3em;">
@@ -48,8 +61,15 @@
 <script src="js/etqf_constants.js"></script>
 <script>
   $(document).ready(function() {
-    for (var i=0; i<bloom_verbs.length;i++) {
-      $("#bloom-list").append($('<li>').text(bloom_verbs[i]));  
-    }
+    var tr;
+    Object.entries(bloom).forEach((key, values) => {
+      $("#blomm-headers").append($("<th>").text(key));
+      tr = $("<tr>");
+      for (var i=0; i<values.length;i++) {
+        $(tr).append($("<td>").text(values[i]));
+      }  
+      $("#bloom-table").append($(tr));
+    });
+    
   });
 </script>
