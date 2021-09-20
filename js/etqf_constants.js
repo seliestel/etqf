@@ -64,7 +64,7 @@ const bloom_verbs =
     "distinguish",
     "elaborate",
     "estimate",
-    "examplify",
+    "exemplify",
     "explain",
     "express",
     "extend",
